@@ -164,6 +164,15 @@
              margin-left: 1rem;
              background-color: var(--color-bg);
         }
+        
+        .mobile-branch-selector {
+            display: none; /* Oculto por defecto */
+            padding: 0.5rem;
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            color: var(--color-text);
+        }
 
         .btn {
             width: 100%;
@@ -674,10 +683,14 @@
             }
             h1 {
                 font-size: 1.25rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             #staff-modal .staff-area-container { grid-template-columns: 1fr; }
             .header-left { gap: 0.5rem; }
-            .tabs { display: none; } /* Ocultar tabs en móvil para simplicidad */
+            .tabs { display: none; } /* Ocultar tabs en móvil */
+            .mobile-branch-selector { display: block; } /* Mostrar select en móvil */
         }
 
     </style>
@@ -694,6 +707,10 @@
                 <button class="tab active" data-restaurant="porto">Belos Aires Porto</button>
                 <button class="tab" data-restaurant="praia">Belos Aires Praia</button>
             </div>
+            <select id="restaurant-selector-mobile" class="mobile-branch-selector">
+                <option value="porto">Belos Aires Porto</option>
+                <option value="praia">Belos Aires Praia</option>
+            </select>
         </div>
         <div class="header-right">
              <button id="logbook-btn" class="action-icon-btn" title="Bitácora de Cambios">&#128214;</button>
@@ -1192,6 +1209,7 @@
         // --- ELEMENTOS DEL DOM --- //
         const languageSelector = document.getElementById('language-selector');
         const restaurantTabs = document.getElementById('restaurant-tabs');
+        const restaurantSelectorMobile = document.getElementById('restaurant-selector-mobile');
         const mesSelector = document.getElementById('mes-selector');
         const demandaSlider = document.getElementById('demanda-slider');
         const capacidadMozoSlider = document.getElementById('capacidad-mozo-slider');
@@ -1626,13 +1644,32 @@
             updateUIText();
         });
 
-        restaurantTabs.addEventListener('click', e => {
-            if (e.target.classList.contains('tab') && !e.target.classList.contains('active')) {
-                state.currentRestaurant = e.target.dataset.restaurant;
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                e.target.classList.add('active');
+        const updateRestaurantControls = (newRestaurant) => {
+            // Update desktop tabs
+            document.querySelectorAll('#restaurant-tabs .tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.restaurant === newRestaurant);
+            });
+            // Update mobile select
+            restaurantSelectorMobile.value = newRestaurant;
+        };
+
+        const handleRestaurantChange = (newRestaurant) => {
+            if (state.currentRestaurant !== newRestaurant) {
+                state.currentRestaurant = newRestaurant;
+                updateRestaurantControls(newRestaurant);
                 fullRender();
             }
+        };
+
+        restaurantTabs.addEventListener('click', e => {
+            const tab = e.target.closest('.tab');
+            if (tab && tab.dataset.restaurant) {
+                handleRestaurantChange(tab.dataset.restaurant);
+            }
+        });
+
+        restaurantSelectorMobile.addEventListener('change', (e) => {
+            handleRestaurantChange(e.target.value);
         });
 
         const handleParamChange = (param, value) => {
@@ -2384,6 +2421,7 @@
         const init = () => {
             loadState();
             languageSelector.value = state.currentLanguage;
+            updateRestaurantControls(state.currentRestaurant);
             updateUIText();
         };
 
