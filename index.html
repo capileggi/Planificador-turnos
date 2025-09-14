@@ -689,11 +689,16 @@
     </header>
     <div class="app-container">
         <aside>
-            <div class="sidebar-section">
+             <div class="sidebar-section">
                 <h3 data-lang-key="parameters">Parámetros</h3>
                 <div class="form-group">
-                    <label for="mes-selector"><span data-lang-key="month" id="mes-label-text">Mes</span>: <span id="mes-value" class="value-display"></span></label>
-                    <select id="mes-selector"></select>
+                    <label for="week-display" data-lang-key="week">Semana</label>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button id="prev-week-btn" class="btn btn-secondary btn-sm" style="width: auto; padding: 0.5rem;">&lt;</button>
+                        <span id="week-display" style="flex-grow: 1; text-align: center; font-weight: 600;"></span>
+                        <button id="next-week-btn" class="btn btn-secondary btn-sm" style="width: auto; padding: 0.5rem;">&gt;</button>
+                    </div>
+                    <button id="today-btn" class="btn btn-secondary" style="margin-top: 0.5rem;" data-lang-key="goToToday">Ir a la Semana Actual</button>
                 </div>
             </div>
 
@@ -910,7 +915,8 @@
             appTitle: { es: 'Planificador de Turnos', pt: 'Planejador de Turnos' },
             manageStaff: { es: 'Gestionar Personal', pt: 'Gerenciar Equipe' },
             parameters: { es: 'Parámetros', pt: 'Parâmetros' },
-            month: { es: 'Mes', pt: 'Mês' },
+            week: { es: 'Semana', pt: 'Semana'},
+            goToToday: { es: 'Ir a la Semana Actual', pt: 'Ir para a Semana Atual' },
             rules: { es: 'Reglas', pt: 'Regras' },
             actions: { es: 'Acciones', pt: 'Ações' },
             preassignShifts: { es: 'Preasignar Turnos', pt: 'Pré-atribuir Turnos' },
@@ -938,25 +944,38 @@
             confirmDeleteEmployee: { es: '¿Seguro que quieres eliminar a este empleado? Esta acción no se puede deshacer.', pt: 'Tem certeza de que deseja excluir este funcionário? Esta ação não pode ser desfeita.' },
             employeeCannotBeAssigned: { es: '{employeeName} ({employeeArea}) no puede ser asignado a {targetArea}.', pt: '{employeeName} ({employeeArea}) não pode ser atribuído a {targetArea}.' },
             // Días y Meses
-            lunes: { es: 'Lunes', pt: 'Segunda-feira' },
-            martes: { es: 'Martes', pt: 'Terça-feira' },
-            miércoles: { es: 'Miércoles', pt: 'Quarta-feira' },
-            jueves: { es: 'Jueves', pt: 'Quinta-feira' },
-            viernes: { es: 'Viernes', pt: 'Sexta-feira' },
+            lunes: { es: 'Lunes', pt: 'Segunda' },
+            martes: { es: 'Martes', pt: 'Terça' },
+            miércoles: { es: 'Miércoles', pt: 'Quarta' },
+            jueves: { es: 'Jueves', pt: 'Quinta' },
+            viernes: { es: 'Viernes', pt: 'Sexta' },
             sábado: { es: 'Sábado', pt: 'Sábado' },
             domingo: { es: 'Domingo', pt: 'Domingo' },
-            enero: { es: 'Enero', pt: 'Janeiro' },
-            febrero: { es: 'Febrero', pt: 'Fevereiro' },
-            marzo: { es: 'Marzo', pt: 'Março' },
-            abril: { es: 'Abril', pt: 'Abril' },
-            mayo: { es: 'Mayo', pt: 'Maio' },
-            junio: { es: 'Junio', pt: 'Junho' },
-            julio: { es: 'Julio', pt: 'Julho' },
-            agosto: { es: 'Agosto', pt: 'Agosto' },
-            septiembre: { es: 'Septiembre', pt: 'Setembro' },
-            octubre: { es: 'Octubre', pt: 'Outubro' },
-            noviembre: { es: 'Noviembre', pt: 'Novembro' },
-            diciembre: { es: 'Diciembre', pt: 'Dezembro' },
+            enero: { es: 'Ene', pt: 'Jan' },
+            febrero: { es: 'Feb', pt: 'Fev' },
+            marzo: { es: 'Mar', pt: 'Mar' },
+            abril: { es: 'Abr', pt: 'Abr' },
+            mayo: { es: 'May', pt: 'Mai' },
+            junio: { es: 'Jun', pt: 'Jun' },
+            julio: { es: 'Jul', pt: 'Jul' },
+            agosto: { es: 'Ago', pt: 'Ago' },
+            septiembre: { es: 'Sep', pt: 'Set' },
+            octubre: { es: 'Oct', pt: 'Out' },
+            noviembre: { es: 'Nov', pt: 'Nov' },
+            diciembre: { es: 'Dic', pt: 'Dez' },
+             // Nombres completos de meses (para PDF)
+            full_enero: { es: 'Enero', pt: 'Janeiro' },
+            full_febrero: { es: 'Febrero', pt: 'Fevereiro' },
+            full_marzo: { es: 'Marzo', pt: 'Março' },
+            full_abril: { es: 'Abril', pt: 'Abril' },
+            full_mayo: { es: 'Mayo', pt: 'Maio' },
+            full_junio: { es: 'Junio', pt: 'Junho' },
+            full_julio: { es: 'Julio', pt: 'Julho' },
+            full_agosto: { es: 'Agosto', pt: 'Agosto' },
+            full_septiembre: { es: 'Septiembre', pt: 'Setembro' },
+            full_octubre: { es: 'Octubre', pt: 'Outubro' },
+            full_noviembre: { es: 'Noviembre', pt: 'Novembro' },
+            full_diciembre: { es: 'Diciembre', pt: 'Dezembro' },
             // KPIs
             coverage: { es: 'Cobertura', pt: 'Cobertura' },
             deficit: { es: 'Déficit (horas-persona)', pt: 'Déficit (horas-pessoa)' },
@@ -990,6 +1009,8 @@
             // Rules text
             rulesText: { es: 'Descanso Mínimo: 11hs<br>Máx. Diario: 8hs<br>Descanso Semanal: 2 días (40hs)', pt: 'Descanso Mínimo: 11hs<br>Máx. Diário: 8hs<br>Descanso Semanal: 2 dias (40hs)' },
             // PDF Export
+            weekOf: { es: 'Semana del', pt: 'Semana de' },
+            to: { es: 'al', pt: 'a' },
             weeklyScheduleFor: { es: 'Horario Semanal para', pt: 'Horário Semanal para' },
             restaurant: { es: 'Restaurante', pt: 'Restaurante' },
             dayPDF: { es: 'Día', pt: 'Dia' },
@@ -1041,7 +1062,7 @@
 
         const CURVAS = {
             porto: {
-                F_mes: {Enero:0.9063, Febrero:0.7346, Marzo:1.1724, Abril:1.0321, Mayo:1.0165, Junio:1.1355, Julio:0.9275, Agosto:1.0334, Septiembre:1.2520, Octubre:1.0492, Noviembre:0.7947, Diciembre:0.9457},
+                F_mes: {"Enero":0.9063, "Febrero":0.7346, "Marzo":1.1724, "Abril":1.0321, "Mayo":1.0165, "Junio":1.1355, "Julio":0.9275, "Agosto":1.0334, "Septiembre":1.2520, "Octubre":1.0492, "Noviembre":0.7947, "Diciembre":0.9457},
                 F_dia: {lunes:0.85, martes:0.9, miércoles:0.95, jueves:1.05, viernes:1.15, sábado:1.2, domingo:0},
                 F_hora: {
                     lunes:   {"12:00":0.3,"13:00":0.5,"14:00":0.6,"15:00":0.4,"16:00":0.2,"17:00":0.2,"18:00":0.6,"19:00":0.8,"20:00":1.1,"21:00":1.4,"22:00":1.2,"23:00":1.0,"24:00":0.5},
@@ -1054,7 +1075,7 @@
                 }
             },
             praia: {
-                F_mes: {Enero:0.5080, Febrero:0.5990, Marzo:0.7557, Abril:0.6984, Mayo:1.0377, Junio:1.2892, Julio:1.3418, Agosto:1.6959, Septiembre:1.4157, Octubre:0.9066, Noviembre:0.8191, Diciembre:0.9329},
+                F_mes: {"Enero":0.5080, "Febrero":0.5990, "Marzo":0.7557, "Abril":0.6984, "Mayo":1.0377, "Junio":1.2892, "Julio":1.3418, "Agosto":1.6959, "Septiembre":1.4157, "Octubre":0.9066, "Noviembre":0.8191, "Diciembre":0.9329},
                 F_dia: {lunes:0.7, martes:0.75, miércoles:0.8, jueves:0.9, viernes:1.2, sábado:2.8, domingo:1.5},
                 F_hora: {
                     lunes:   {"12:00":0.4,"13:00":0.6,"14:00":0.9,"15:00":1.2,"16:00":1.0,"17:00":0.8,"18:00":0.7,"19:00":0.8,"20:00":0.6,"21:00":0.8,"22:00":1.0,"23:00":1.2,"24:00":0.8},
@@ -1068,8 +1089,9 @@
             }
         };
 
-        const PARAMS_DEFAULT = { demandaDiaria: 100, capacidadMozoPorHora: 10, ratioCocina: 25, descansoMinHoras: 11, maxDiarioHoras: 8, mes: "Septiembre" };
+        const PARAMS_DEFAULT = { demandaDiaria: 100, capacidadMozoPorHora: 10, ratioCocina: 25, descansoMinHoras: 11, maxDiarioHoras: 8 };
         const DIAS_KEYS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+        const MESES_KEYS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
         const HORAS = Array.from({ length: 13 }, (_, i) => `${12 + i}:00`);
         const COLORS = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#6366f1', '#f97316', '#a855f7', '#d946ef', '#0ea5e9'];
 
@@ -1077,6 +1099,7 @@
         let state = {
             currentRestaurant: 'porto',
             currentLanguage: 'es',
+            currentWeekStartDate: null, // YYYY-MM-DD format
             params: { ...PARAMS_DEFAULT },
             schedule: {
                 porto: { cocina: {}, salon: {} },
@@ -1111,6 +1134,7 @@
                     const parsedState = JSON.parse(savedState);
                     state.currentRestaurant = parsedState.currentRestaurant || 'porto';
                     state.currentLanguage = parsedState.currentLanguage || 'es';
+                    state.currentWeekStartDate = parsedState.currentWeekStartDate || null;
                     state.params = parsedState.params || { ...PARAMS_DEFAULT };
                     state.schedule = parsedState.schedule || { porto: { cocina: {}, salon: {} }, praia: { cocina: {}, salon: {} } };
                     state.absences = parsedState.absences || { porto: {}, praia: {} };
@@ -1124,7 +1148,9 @@
         const languageSelector = document.getElementById('language-selector');
         const restaurantTabs = document.getElementById('restaurant-tabs');
         const restaurantSelectorMobile = document.getElementById('restaurant-selector-mobile');
-        const mesSelector = document.getElementById('mes-selector');
+        const prevWeekBtn = document.getElementById('prev-week-btn');
+        const nextWeekBtn = document.getElementById('next-week-btn');
+        const todayBtn = document.getElementById('today-btn');
         const autoAssignBtn = document.getElementById('auto-assign-btn');
         const clearScheduleBtn = document.getElementById('clear-schedule-btn');
         const kpiContainer = document.getElementById('kpi-container');
@@ -1132,6 +1158,39 @@
         const manageStaffBtn = document.getElementById('manage-staff-btn');
         const logbookBtn = document.getElementById('logbook-btn');
         const addNoteBtn = document.getElementById('add-note-btn');
+
+        // --- LÓGICA DE FECHAS --- //
+        const getMonday = (d) => {
+            d = new Date(d);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(d.setDate(diff));
+            monday.setHours(0, 0, 0, 0);
+            return monday;
+        };
+
+        const dateToISOString = (date) => date.toISOString().split('T')[0];
+        
+        const getCurrentWeekDates = () => {
+            const startDate = new Date(state.currentWeekStartDate);
+            return Array.from({ length: 7 }, (_, i) => {
+                const date = new Date(startDate);
+                date.setDate(date.getDate() + i);
+                return date;
+            });
+        };
+        
+        const isSameDate = (date1, date2) => {
+            return date1.getFullYear() === date2.getFullYear() &&
+                   date1.getMonth() === date2.getMonth() &&
+                   date1.getDate() === date2.getDate();
+        };
+        
+        const formatDate = (date, options) => {
+             const locale = state.currentLanguage === 'pt' ? 'pt-PT' : 'es-ES';
+             return date.toLocaleDateString(locale, options);
+        };
+
 
         // --- LÓGICA DE CÁLCULO --- //
         const employeeColorCache = {};
@@ -1146,13 +1205,18 @@
             return color;
         };
 
-        const calculateHourlyDemand = (restaurant, dia, hora) => {
+        const calculateHourlyDemand = (restaurant, date, hora) => {
             const curvas = CURVAS[restaurant];
             const params = state.params;
             
-            const F_mes = curvas.F_mes[params.mes] || 1;
-            const F_dia = curvas.F_dia[dia] || 0;
-            const hourlyFactorsForDay = curvas.F_hora[dia] || {};
+            const monthIndex = date.getMonth();
+            const monthName = MESES_KEYS[monthIndex];
+            const dayIndex = (date.getDay() + 6) % 7; // Monday = 0
+            const dayName = DIAS_KEYS[dayIndex];
+
+            const F_mes = curvas.F_mes[monthName] || 1;
+            const F_dia = curvas.F_dia[dayName] || 0;
+            const hourlyFactorsForDay = curvas.F_hora[dayName] || {};
             const sum_F_hora = Object.values(hourlyFactorsForDay).reduce((a, b) => a + b, 0);
             const F_hora = hourlyFactorsForDay[hora] || 0;
 
@@ -1164,9 +1228,9 @@
             return demandaDiariaAjustada * w_h;
         };
 
-        const calculateRequirements = (restaurant, dia, hora) => {
+        const calculateRequirements = (restaurant, date, hora) => {
             const params = state.params;
-            const demand_h = calculateHourlyDemand(restaurant, dia, hora);
+            const demand_h = calculateHourlyDemand(restaurant, date, hora);
             
             if (demand_h <= 0) return { reqCocina: 0, reqSalon: 0 };
             
@@ -1193,16 +1257,9 @@
             return null;
         };
         
-        const populateMesSelector = () => {
-            mesSelector.innerHTML = '';
-            Object.keys(CURVAS.porto.F_mes).forEach(mesKey => {
-                mesSelector.add(new Option(t(mesKey.toLowerCase()), mesKey));
-            });
-        };
-        
-        const isEmployeeAbsent = (employeeId, dia) => {
+        const isEmployeeAbsent = (employeeId, dateString) => {
             const restaurantAbsences = state.absences[state.currentRestaurant];
-            return restaurantAbsences?.[employeeId]?.some(absence => absence.dia === dia) || false;
+            return restaurantAbsences?.[employeeId]?.some(absence => absence.date === dateString) || false;
         };
         
         const shuffleArray = (array) => {
@@ -1213,9 +1270,9 @@
             return array;
         };
 
-        const isEmployeeAssigned = (employeeId, restaurant, dia, hora) => {
+        const isEmployeeAssigned = (employeeId, restaurant, dateString, hora) => {
             return ['cocina', 'salon'].some(area => 
-                state.schedule[restaurant][area]?.[dia]?.[hora]?.includes(employeeId)
+                state.schedule[restaurant][area]?.[dateString]?.[hora]?.includes(employeeId)
             );
         };
         
@@ -1234,48 +1291,51 @@
             const restaurant = state.currentRestaurant;
             const dotacion = state.dotacion[restaurant][area].filter(e => e.contratoSem === 40);
             if (dotacion.length === 0) return;
+            const weekDates = getCurrentWeekDates();
 
             // 1. Determinar necesidades de cobertura semanales
             const weeklyNeeds = {};
-            DIAS_KEYS.forEach(dia => {
-                weeklyNeeds[dia] = {};
+            weekDates.forEach(date => {
+                const dateString = dateToISOString(date);
+                weeklyNeeds[dateString] = {};
                 HORAS.forEach(hora => {
-                    const reqs = calculateRequirements(restaurant, dia, hora);
-                    weeklyNeeds[dia][hora] = area === 'cocina' ? reqs.reqCocina : reqs.reqSalon;
+                    const reqs = calculateRequirements(restaurant, date, hora);
+                    weeklyNeeds[dateString][hora] = area === 'cocina' ? reqs.reqCocina : reqs.reqSalon;
                 });
             });
 
             // 2. Asignar días libres rotativos y consecutivos
             const daysOffPatterns = [[5, 6], [6, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]; // Sáb/Dom, Dom/Lun, etc.
-            const employeeWorkDays = {};
+            const employeeWorkDates = {};
             dotacion.forEach((employee, index) => {
                 const offIndices = daysOffPatterns[index % daysOffPatterns.length];
-                employeeWorkDays[employee.id] = DIAS_KEYS.filter((_, dayIndex) => !offIndices.includes(dayIndex));
+                employeeWorkDates[employee.id] = weekDates
+                    .filter((_, dayIndex) => !offIndices.includes(dayIndex))
+                    .map(date => dateToISOString(date));
             });
             
             // 3. Asignar turnos día por día
-            DIAS_KEYS.forEach(dia => {
-                const employeesWorkingToday = dotacion.filter(e => employeeWorkDays[e.id].includes(dia) && !isEmployeeAbsent(e.id, dia));
+            weekDates.forEach(date => {
+                const dateString = dateToISOString(date);
+                const employeesWorkingToday = dotacion.filter(e => 
+                    employeeWorkDates[e.id].includes(dateString) && !isEmployeeAbsent(e.id, dateString)
+                );
                 shuffleArray(employeesWorkingToday);
 
                 employeesWorkingToday.forEach(employee => {
                     let bestShift = { startIndex: -1, score: -Infinity };
 
-                    // Encontrar el mejor hueco de 4h-1h-4h para este empleado
-                    // Un turno de 4+4 con 1h de descanso dura 9 horas en total
                     const possibleStartIndices = Array.from({ length: HORAS.length - 9 + 1 }, (_, i) => i);
                     
                     possibleStartIndices.forEach(startIndex => {
                         let currentScore = 0;
-                        // Primer bloque de 4 horas
                         for (let i = 0; i < 4; i++) {
                             const hora = HORAS[startIndex + i];
-                            currentScore += weeklyNeeds[dia][hora];
+                            currentScore += weeklyNeeds[dateString][hora];
                         }
-                        // Segundo bloque de 4 horas (saltando la hora de descanso)
                         for (let i = 5; i < 9; i++) {
                             const hora = HORAS[startIndex + i];
-                            currentScore += weeklyNeeds[dia][hora];
+                            currentScore += weeklyNeeds[dateString][hora];
                         }
                         
                         if (currentScore > bestShift.score) {
@@ -1283,21 +1343,18 @@
                         }
                     });
 
-                    // Asignar al empleado al mejor turno y actualizar las necesidades
                     if (bestShift.startIndex !== -1) {
                          const assignHour = (hora) => {
-                            if (!state.schedule[restaurant][area][dia]) state.schedule[restaurant][area][dia] = {};
-                            if (!state.schedule[restaurant][area][dia][hora]) state.schedule[restaurant][area][dia][hora] = [];
-                            state.schedule[restaurant][area][dia][hora].push(employee.id);
+                            if (!state.schedule[restaurant][area][dateString]) state.schedule[restaurant][area][dateString] = {};
+                            if (!state.schedule[restaurant][area][dateString][hora]) state.schedule[restaurant][area][dateString][hora] = [];
+                            state.schedule[restaurant][area][dateString][hora].push(employee.id);
 
-                            if (weeklyNeeds[dia][hora] > 0) {
-                                weeklyNeeds[dia][hora]--;
+                            if (weeklyNeeds[dateString][hora] > 0) {
+                                weeklyNeeds[dateString][hora]--;
                             }
                         };
                         
-                        // Primer bloque
                         for (let i = 0; i < 4; i++) assignHour(HORAS[bestShift.startIndex + i]);
-                        // Segundo bloque
                         for (let i = 5; i < 9; i++) assignHour(HORAS[bestShift.startIndex + i]);
                     }
                 });
@@ -1325,18 +1382,17 @@
             container.innerHTML = '';
             const restaurant = state.currentRestaurant;
             const allEmployees = state.dotacion[restaurant];
-
-            // Get current day for highlighting
-            const todayIndex = (new Date().getDay() + 6) % 7; // Make Monday 0, Sunday 6
-            const todayKey = DIAS_KEYS[todayIndex];
+            const weekDates = getCurrentWeekDates();
+            const today = new Date();
 
             // Create Header
             const header = document.createElement('div');
             header.className = 'timeline-header';
             header.innerHTML = `<div class="header-cell employee-cell-header">${t('employee')}</div>`;
-            DIAS_KEYS.forEach(diaKey => {
-                const isTodayClass = diaKey === todayKey ? ' is-today' : '';
-                header.innerHTML += `<div class="header-cell${isTodayClass}">${t(diaKey)}</div>`;
+            weekDates.forEach((date, index) => {
+                const isTodayClass = isSameDate(date, today) ? ' is-today' : '';
+                const diaKey = DIAS_KEYS[index];
+                header.innerHTML += `<div class="header-cell${isTodayClass}">${t(diaKey)}<br><span style="font-weight:normal; font-size: 0.9em;">${date.getDate()}</span></div>`;
             });
             container.appendChild(header);
 
@@ -1355,20 +1411,15 @@
 
                 employeesInArea.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(employee => {
                     const employeeShifts = getConsolidatedShifts(employee.id);
+                    const assignedHours = employeeShifts.reduce((acc, shift) => acc + shift.duration, 0);
 
                     const row = document.createElement('div');
                     row.className = 'timeline-row';
                     row.dataset.employeeId = employee.id;
                     
-                    const assignedHours = employeeShifts.reduce((acc, shift) => acc + shift.duration, 0);
-
-                    // Determine class for hours summary
                     let hoursClass = 'is-under-contract';
-                    if (assignedHours > employee.contratoSem) {
-                        hoursClass = 'is-overtime';
-                    } else if (assignedHours === employee.contratoSem) {
-                        hoursClass = 'is-perfect';
-                    }
+                    if (assignedHours > employee.contratoSem) hoursClass = 'is-overtime';
+                    else if (assignedHours === employee.contratoSem) hoursClass = 'is-perfect';
 
                     const employeeCell = document.createElement('div');
                     employeeCell.className = 'employee-cell';
@@ -1380,28 +1431,27 @@
                     employeeCell.addEventListener('click', () => openAssignmentModal(employee.id));
                     row.appendChild(employeeCell);
 
-                    DIAS_KEYS.forEach(diaKey => {
+                    weekDates.forEach(date => {
+                        const dateString = dateToISOString(date);
                         const dayCell = document.createElement('div');
-                        const isWeekend = diaKey === 'sábado' || diaKey === 'domingo';
+                        const dayIndex = (date.getDay() + 6) % 7;
+                        const isWeekend = dayIndex === 5 || dayIndex === 6;
                         dayCell.className = `day-cell${isWeekend ? ' is-weekend' : ''}`;
-
-                        dayCell.dataset.dia = diaKey;
+                        dayCell.dataset.date = dateString;
                         
-                        const isAbsentToday = isEmployeeAbsent(employee.id, diaKey);
-                        if(isAbsentToday){
+                        if(isEmployeeAbsent(employee.id, dateString)){
                             dayCell.classList.add('is-absent');
-                            const absenceInfo = state.absences[restaurant][employee.id].find(a => a.dia === diaKey);
+                            const absenceInfo = state.absences[restaurant][employee.id].find(a => a.date === dateString);
                             dayCell.title = `AUSENTE: ${absenceInfo.motivo}`;
                         }
 
-                        const shiftsForDay = employeeShifts.filter(s => s.dia === diaKey);
+                        const shiftsForDay = employeeShifts.filter(s => s.date === dateString);
                         
                         shiftsForDay.forEach(shift => {
                             const shiftBar = document.createElement('div');
                             shiftBar.className = 'shift-bar';
                             
                             const startHour = parseInt(shift.startTime.split(':')[0]);
-                            const endHour = parseInt(shift.endTime.split(':')[0]);
                             const duration = shift.duration;
 
                             const left = ((startHour - 12) / 12) * 100;
@@ -1412,18 +1462,14 @@
                             shiftBar.style.backgroundColor = getColorForEmployee(employee.id);
                             
                             let barText = '';
-                            if (duration >= 5) {
-                                barText = `${shift.startTime} - ${shift.endTime}`;
-                            } else if (duration >= 2) {
-                                barText = `${startHour}-${endHour}`;
-                            } // For 1-hour shifts, text remains empty.
+                            if (duration >= 5) barText = `${shift.startTime} - ${shift.endTime}`;
+                            else if (duration >= 2) barText = `${startHour}-${parseInt(shift.endTime.split(':')[0])}`;
                             
                             shiftBar.textContent = barText;
-                            shiftBar.title = `${employee.nombre} (${employee.rol}) | ${shift.startTime} - ${shift.endTime} (${duration}hs)`;
+                            shiftBar.title = `${employee.nombre} | ${shift.startTime} - ${shift.endTime} (${duration}hs)`;
 
                             dayCell.appendChild(shiftBar);
                         });
-
                         row.appendChild(dayCell);
                     });
                     body.appendChild(row);
@@ -1436,15 +1482,17 @@
             kpiContainer.innerHTML = '';
             const restaurant = state.currentRestaurant;
             let totalRequired = 0, totalAssigned = 0, totalAbsenceHours = 0;
+            const weekDates = getCurrentWeekDates();
 
-            DIAS_KEYS.forEach(dia => {
+            weekDates.forEach(date => {
+                const dateString = dateToISOString(date);
                 HORAS.forEach(hora => {
-                    const reqs = calculateRequirements(restaurant, dia, hora);
+                    const reqs = calculateRequirements(restaurant, date, hora);
                     totalRequired += reqs.reqCocina + reqs.reqSalon;
                     ['cocina', 'salon'].forEach(area => {
-                        const assignedInSlot = state.schedule[restaurant][area][dia]?.[hora] || [];
+                        const assignedInSlot = state.schedule[restaurant][area][dateString]?.[hora] || [];
                         assignedInSlot.forEach(employeeId => {
-                            if (isEmployeeAbsent(employeeId, dia)) {
+                            if (isEmployeeAbsent(employeeId, dateString)) {
                                 totalAbsenceHours++;
                             } else {
                                 totalAssigned++;
@@ -1458,12 +1506,11 @@
             const deficit = Math.max(0, totalRequired - totalAssigned);
             const excess = Math.max(0, totalAssigned - totalRequired);
 
-            const kpiKeys = { coverage, deficit, excess, absenteeismHours: totalAbsenceHours };
             const kpiMap = [
-                { key: 'coverage', value: `${kpiKeys.coverage}%` },
-                { key: 'deficit', value: kpiKeys.deficit },
-                { key: 'excess', value: kpiKeys.excess },
-                { key: 'absenteeismHours', value: kpiKeys.absenteeismHours }
+                { key: 'coverage', value: `${coverage}%` },
+                { key: 'deficit', value: deficit },
+                { key: 'excess', value: excess },
+                { key: 'absenteeismHours', value: totalAbsenceHours }
             ];
 
             kpiMap.forEach(kpi => {
@@ -1488,13 +1535,15 @@
             employeeLoadBody.innerHTML = '';
             const restaurant = state.currentRestaurant;
             const allEmployees = [...state.dotacion[restaurant].cocina, ...state.dotacion[restaurant].salon];
+            const weekDates = getCurrentWeekDates();
 
             allEmployees.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(employee => {
                 let assignedHours = 0;
-                DIAS_KEYS.forEach(dia => { 
-                    if (!isEmployeeAbsent(employee.id, dia)) {
+                weekDates.forEach(date => {
+                    const dateString = dateToISOString(date);
+                    if (!isEmployeeAbsent(employee.id, dateString)) {
                         HORAS.forEach(hora => { 
-                            if (isEmployeeAssigned(employee.id, restaurant, dia, hora)) { 
+                            if (isEmployeeAssigned(employee.id, restaurant, dateString, hora)) { 
                                 assignedHours++; 
                             } 
                         });
@@ -1518,10 +1567,16 @@
             });
         };
         
-        const updateSidebar = () => {
-            const params = state.params;
-            mesSelector.value = params.mes;
-            document.getElementById('mes-value').textContent = t(params.mes.toLowerCase());
+        const renderWeekSelector = () => {
+            const weekDates = getCurrentWeekDates();
+            const startOfWeek = weekDates[0];
+            const endOfWeek = weekDates[6];
+            
+            const formatOptions = { day: 'numeric', month: 'short' };
+            const startStr = formatDate(startOfWeek, formatOptions);
+            const endStr = formatDate(endOfWeek, formatOptions);
+            
+            document.getElementById('week-display').textContent = `${startStr} - ${endStr}`;
         };
         
         const updateUIText = () => {
@@ -1540,15 +1595,14 @@
             });
             document.getElementById('rules-text').innerHTML = t('rulesText');
             document.getElementById('logbook-btn').title = t('changeLogbook');
-            populateMesSelector();
             fullRender();
         };
 
         const fullRender = () => {
+            renderWeekSelector();
             renderUnifiedSchedule();
             renderKPIs();
             renderEmployeeLoad();
-            updateSidebar();
             saveState();
         };
 
@@ -1585,13 +1639,20 @@
             handleRestaurantChange(e.target.value);
         });
 
-        const handleParamChange = (param, value) => {
-            state.params[param] = value;
+        const changeWeek = (days) => {
+            const currentDate = new Date(state.currentWeekStartDate);
+            currentDate.setDate(currentDate.getDate() + days);
+            state.currentWeekStartDate = dateToISOString(currentDate);
             fullRender();
         };
-        
-        mesSelector.addEventListener('change', e => handleParamChange('mes', e.target.value));
-        
+
+        prevWeekBtn.addEventListener('click', () => changeWeek(-7));
+        nextWeekBtn.addEventListener('click', () => changeWeek(7));
+        todayBtn.addEventListener('click', () => {
+            state.currentWeekStartDate = dateToISOString(getMonday(new Date()));
+            fullRender();
+        });
+
         autoAssignBtn.addEventListener('click', autoAssign);
         
         clearScheduleBtn.addEventListener('click', () => {
@@ -1607,13 +1668,13 @@
         const openModal = (modalId) => document.getElementById(modalId).classList.add('is-visible');
         const closeModal = (modalId) => document.getElementById(modalId).classList.remove('is-visible');
         
-        document.querySelectorAll('.modal-close').forEach(el => {
-            el.addEventListener('click', (e) => closeModal(e.target.dataset.modalId));
-        });
-        document.body.addEventListener('click', e => {
-            const cancelBtn = e.target.closest('.modal-footer .btn-secondary');
-            if(cancelBtn && cancelBtn.dataset.modalId) {
-                closeModal(cancelBtn.dataset.modalId);
+        document.addEventListener('click', (e) => {
+            const closeTrigger = e.target.closest('.modal-close, .modal-footer .btn-secondary[data-modal-id]');
+            if (closeTrigger) {
+                const modalId = closeTrigger.dataset.modalId;
+                if (modalId) {
+                    closeModal(modalId);
+                }
             }
         });
 
@@ -1720,9 +1781,9 @@
 
             ['cocina', 'salon'].forEach(area => {
                 if (!state.schedule[restaurant][area]) return;
-                Object.keys(state.schedule[restaurant][area]).forEach(dia => {
-                    Object.keys(state.schedule[restaurant][area][dia]).forEach(hora => {
-                        state.schedule[restaurant][area][dia][hora] = state.schedule[restaurant][area][dia][hora].filter(id => id !== employeeId);
+                Object.keys(state.schedule[restaurant][area]).forEach(dateString => {
+                    Object.keys(state.schedule[restaurant][area][dateString]).forEach(hora => {
+                        state.schedule[restaurant][area][dateString][hora] = state.schedule[restaurant][area][dateString][hora].filter(id => id !== employeeId);
                     });
                 });
             });
@@ -1757,17 +1818,20 @@
             grid.innerHTML = '';
             grid.dataset.area = area;
             
+            const weekDates = getCurrentWeekDates();
+
             grid.appendChild(document.createElement('div'));
-            DIAS_KEYS.forEach(d => grid.innerHTML += `<div>${t(d).substring(0,3)}</div>`);
+            weekDates.forEach((date, i) => grid.innerHTML += `<div>${t(DIAS_KEYS[i]).substring(0,3)} ${date.getDate()}</div>`);
             
             HORAS.forEach(hora => {
                 grid.innerHTML += `<div>${hora}</div>`;
-                DIAS_KEYS.forEach(dia => {
+                weekDates.forEach(date => {
+                    const dateString = dateToISOString(date);
                     const cell = document.createElement('div');
                     cell.className = 'assign-cell';
-                    cell.dataset.dia = dia;
+                    cell.dataset.date = dateString;
                     cell.dataset.hora = hora;
-                    if (isEmployeeAssigned(employeeId, state.currentRestaurant, dia, hora)) {
+                    if (isEmployeeAssigned(employeeId, state.currentRestaurant, dateString, hora)) {
                         cell.classList.add('is-assigned');
                     }
                     grid.appendChild(cell);
@@ -1794,15 +1858,16 @@
 
         document.getElementById('assignment-save-btn').addEventListener('click', () => {
             const employeeId = currentAssignmentState.employeeId;
-            const employee = getEmployeeById(employeeId);
             logAction('shift_move', { employeeId }, null);
 
             const restaurant = state.currentRestaurant;
             const area = document.getElementById('assignment-grid').dataset.area;
             
-            DIAS_KEYS.forEach(dia => {
+            const weekDates = getCurrentWeekDates();
+            weekDates.forEach(date => {
+                const dateString = dateToISOString(date);
                 HORAS.forEach(hora => {
-                    const assignments = state.schedule[restaurant][area]?.[dia]?.[hora];
+                    const assignments = state.schedule[restaurant][area]?.[dateString]?.[hora];
                     if (assignments) {
                         const index = assignments.indexOf(employeeId);
                         if (index > -1) assignments.splice(index, 1);
@@ -1811,11 +1876,11 @@
             });
             
             document.querySelectorAll('#assignment-grid .assign-cell.is-assigned').forEach(cell => {
-                const { dia, hora } = cell.dataset;
-                if (!state.schedule[restaurant][area][dia]) state.schedule[restaurant][area][dia] = {};
-                if (!state.schedule[restaurant][area][dia][hora]) state.schedule[restaurant][area][dia][hora] = [];
-                if (!state.schedule[restaurant][area][dia][hora].includes(employeeId)) {
-                    state.schedule[restaurant][area][dia][hora].push(employeeId);
+                const { date, hora } = cell.dataset;
+                if (!state.schedule[restaurant][area][date]) state.schedule[restaurant][area][date] = {};
+                if (!state.schedule[restaurant][area][date][hora]) state.schedule[restaurant][area][date][hora] = [];
+                if (!state.schedule[restaurant][area][date][hora].includes(employeeId)) {
+                    state.schedule[restaurant][area][date][hora].push(employeeId);
                 }
             });
             
@@ -1827,13 +1892,15 @@
         const getConsolidatedShifts = (employeeId) => {
             const restaurant = state.currentRestaurant;
             const allSlots = [];
+            const weekDates = getCurrentWeekDates();
 
-            DIAS_KEYS.forEach(dia => {
-                if (isEmployeeAbsent(employeeId, dia)) return;
+            weekDates.forEach(date => {
+                const dateString = dateToISOString(date);
+                if (isEmployeeAbsent(employeeId, dateString)) return;
 
                 HORAS.forEach(hora => {
-                    if (isEmployeeAssigned(employeeId, restaurant, dia, hora)) {
-                        allSlots.push({ dia, hora: parseInt(hora.split(':')[0], 10) });
+                    if (isEmployeeAssigned(employeeId, restaurant, dateString, hora)) {
+                        allSlots.push({ date: dateString, hora: parseInt(hora.split(':')[0], 10) });
                     }
                 });
             });
@@ -1841,18 +1908,19 @@
             if (allSlots.length === 0) return [];
 
             const consolidatedShifts = [];
-            DIAS_KEYS.forEach(dia => {
-                const dailySlots = allSlots.filter(s => s.dia === dia).map(s => s.hora).sort((a, b) => a - b);
+            weekDates.forEach(date => {
+                const dateString = dateToISOString(date);
+                const dailySlots = allSlots.filter(s => s.date === dateString).map(s => s.hora).sort((a, b) => a - b);
                 if (dailySlots.length === 0) return;
 
-                let currentShift = { dia, startTime: dailySlots[0], endTime: dailySlots[0] };
+                let currentShift = { date: dateString, startTime: dailySlots[0], endTime: dailySlots[0] };
 
                 for (let i = 1; i < dailySlots.length; i++) {
                     if (dailySlots[i] === currentShift.endTime + 1) {
                         currentShift.endTime = dailySlots[i];
                     } else {
                         consolidatedShifts.push({ ...currentShift, endTime: currentShift.endTime + 1 });
-                        currentShift = { dia, startTime: dailySlots[i], endTime: dailySlots[i] };
+                        currentShift = { date: dateString, startTime: dailySlots[i], endTime: dailySlots[i] };
                     }
                 }
                 consolidatedShifts.push({ ...currentShift, endTime: currentShift.endTime + 1 });
@@ -1866,16 +1934,20 @@
             }));
         };
         
-        const getEmployeeShifts = (employeeId) => {
+        const getEmployeeShiftsForPDF = (employeeId) => {
             const shifts = getConsolidatedShifts(employeeId);
-            return shifts.map(s => ({...s, dia: t(s.dia) }));
+            return shifts.map(s => {
+                const date = new Date(s.date + 'T00:00:00');
+                const dayIndex = (date.getDay() + 6) % 7;
+                return {...s, dia: t(DIAS_KEYS[dayIndex]) + ` ${date.getDate()}` };
+            });
         };
         
         const exportEmployeeSchedulePDF = (employeeId) => {
             const employee = getEmployeeById(employeeId);
             if (!employee) return;
 
-            const shifts = getEmployeeShifts(employeeId);
+            const shifts = getEmployeeShiftsForPDF(employeeId);
             const totalHours = shifts.reduce((acc, s) => acc + s.duration, 0);
             const balance = totalHours - employee.contratoSem;
             
@@ -1886,8 +1958,13 @@
             doc.text(`${t('weeklyScheduleFor')} ${employee.nombre}`, 14, 22);
             doc.setFontSize(11);
             doc.setTextColor(100);
-            doc.text(`${t('restaurant')}: ${state.currentRestaurant === 'porto' ? 'Belos Aires Porto' : 'Belos Aires Praia'}`, 14, 30);
-            doc.text(`${t('month')}: ${t(state.params.mes.toLowerCase())}`, 14, 36);
+            
+            const weekDates = getCurrentWeekDates();
+            const weekStart = weekDates[0];
+            const weekEnd = weekDates[6];
+            const monthName = t('full_' + MESES_KEYS[weekStart.getMonth()].toLowerCase());
+            doc.text(`${t('weekOf')} ${weekStart.getDate()} ${t('to')} ${weekEnd.getDate()} ${t('de')} ${monthName} ${weekStart.getFullYear()}`, 14, 30);
+            doc.text(`${t('restaurant')}: ${state.currentRestaurant === 'porto' ? 'Belos Aires Porto' : 'Belos Aires Praia'}`, 14, 36);
 
             const tableColumn = [t('dayPDF'), t('startTime'), t('endTime'), t('durationHs')];
             const tableRows = shifts.map(s => [s.dia, s.startTime, s.endTime, s.duration]);
@@ -1905,7 +1982,7 @@
             doc.text(`- ${t('contractHoursPDF')} ${employee.contratoSem} hs`, 14, finalY + 28);
             doc.text(`- ${t('balancePDF')} ${balance > 0 ? '+' : ''}${balance} hs`, 14, finalY + 34);
 
-            doc.save(`Horario_${employee.nombre.replace(' ', '_')}_${state.params.mes}.pdf`);
+            doc.save(`Horario_${employee.nombre.replace(' ', '_')}_${state.currentWeekStartDate}.pdf`);
         };
         
         // --- LÓGICA DE AUSENTISMO --- //
@@ -1915,8 +1992,10 @@
 
         const populateAbsenceSelects = () => {
             absenceDaySelect.innerHTML = '';
-            DIAS_KEYS.forEach(diaKey => {
-                absenceDaySelect.add(new Option(t(diaKey), diaKey));
+            getCurrentWeekDates().forEach((date, i) => {
+                const dateString = dateToISOString(date);
+                const optionText = `${t(DIAS_KEYS[i])} ${date.getDate()}`;
+                absenceDaySelect.add(new Option(optionText, dateString));
             });
 
             absenceReasonSelect.innerHTML = '';
@@ -1950,14 +2029,17 @@
             }
 
             restaurantAbsences.forEach(absence => {
+                const date = new Date(absence.date + 'T00:00:00');
+                const dayIndex = (date.getDay() + 6) % 7;
+                const dateText = `${t(DIAS_KEYS[dayIndex])} ${date.getDate()}`;
                 const li = document.createElement('li');
                 li.className = 'absence-list-item';
                 li.innerHTML = `
                     <div>
-                        <span><strong>${t(absence.dia)}:</strong> ${t(absence.motivo)}</span>
+                        <span><strong>${dateText}:</strong> ${t(absence.motivo)}</span>
                         ${absence.notas ? `<small>${absence.notas}</small>` : ''}
                     </div>
-                    <button class="btn btn-danger btn-sm" data-action="delete-absence" data-day="${absence.dia}" title="Eliminar Ausencia">&times;</button>
+                    <button class="btn btn-danger btn-sm" data-action="delete-absence" data-date="${absence.date}" title="Eliminar Ausencia">&times;</button>
                 `;
                 listElement.appendChild(li);
             });
@@ -1967,17 +2049,20 @@
             e.preventDefault();
             const employeeId = document.getElementById('absence-employee-id').value;
             const employee = getEmployeeById(employeeId);
-            const dia = document.getElementById('absence-day').value;
+            const date = document.getElementById('absence-day').value;
             const motivo = document.getElementById('absence-reason').value;
             const notas = document.getElementById('absence-notes').value.trim();
+            const dateObj = new Date(date + 'T00:00:00');
+            const dayIndex = (dateObj.getDay() + 6) % 7;
+            const dayName = t(DIAS_KEYS[dayIndex]) + ' ' + dateObj.getDate();
 
-            const details = { employeeId, employeeName: employee.nombre, day: dia, reason: motivo, notes: notas };
+            const details = { employeeId, employeeName: employee.nombre, day: dayName, reason: motivo, notes: notas, date: date };
             logAction('absence_add', details, null);
 
             const restaurant = state.currentRestaurant;
             if (!state.absences[restaurant][employeeId]) state.absences[restaurant][employeeId] = [];
-            state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.dia !== dia);
-            state.absences[restaurant][employeeId].push({ dia, motivo, notas });
+            state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.date !== date);
+            state.absences[restaurant][employeeId].push({ date, motivo, notas });
             
             renderAbsenceList(employeeId);
             fullRender();
@@ -1989,13 +2074,16 @@
             const deleteButton = e.target.closest('button[data-action="delete-absence"]');
             if (deleteButton) {
                 const employeeId = document.getElementById('absence-employee-id').value;
-                const dayToDelete = deleteButton.dataset.day;
+                const dateToDelete = deleteButton.dataset.date;
                 const restaurant = state.currentRestaurant;
                 const employee = getEmployeeById(employeeId);
+                const dateObj = new Date(dateToDelete + 'T00:00:00');
+                const dayIndex = (dateObj.getDay() + 6) % 7;
+                const dayName = t(DIAS_KEYS[dayIndex]) + ' ' + dateObj.getDate();
 
                 if (state.absences[restaurant][employeeId]) {
-                    state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.dia !== dayToDelete);
-                     logAction('absence_remove', { employeeId, employeeName: employee.nombre, day: dayToDelete }, null);
+                    state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.date !== dateToDelete);
+                     logAction('absence_remove', { employeeId, employeeName: employee.nombre, day: dayName, date: dateToDelete }, null);
                 }
                 
                 renderAbsenceList(employeeId);
@@ -2112,22 +2200,24 @@
             const employee = details.employeeId ? getEmployeeById(details.employeeId) : null;
             const employeeName = employee ? employee.nombre : (details.employeeName || 'N/A');
             
+            const day = details.day || 'N/A';
+
             switch (type) {
                 case 'shift_add':
-                    return t('log_shift_add', { employeeName, area: t(details.targetArea), day: t(details.targetDay), hour: details.targetHour });
+                    return t('log_shift_add', { employeeName, area: t(details.targetArea), day: day, hour: details.targetHour });
                 case 'shift_remove':
-                    return t('log_shift_remove', { employeeName, area: t(details.sourceArea), day: t(details.sourceDay), hour: details.sourceHour });
+                    return t('log_shift_remove', { employeeName, area: t(details.sourceArea), day: day, hour: details.sourceHour });
                 case 'shift_move':
-                     if (!details.sourceDay) return t('log_shift_add', { employeeName, area: t(details.targetArea), day: t(details.targetDay), hour: details.targetHour });
-                    return t('log_shift_move', { employeeName, sourceArea: t(details.sourceArea), sourceDay: t(details.sourceDay), sourceHour: details.sourceHour, targetArea: t(details.targetArea), targetDay: t(details.targetDay), targetHour: details.targetHour });
+                     if (!details.sourceDay) return t('log_shift_add', { employeeName, area: t(details.targetArea), day: day, hour: details.targetHour });
+                    return t('log_shift_move', { employeeName, sourceArea: t(details.sourceArea), sourceDay: details.sourceDay, sourceHour: details.sourceHour, targetArea: t(details.targetArea), targetDay: details.targetDay, targetHour: details.targetHour });
                 case 'schedule_clear':
                     return t('log_schedule_clear', { restaurantName: details.restaurantName });
                 case 'schedule_preassign':
                     return t('log_schedule_preassign', { restaurantName: details.restaurantName });
                 case 'absence_add':
-                    return t('log_absence_add', { employeeName, day: t(details.day), reason: t(details.reason) });
+                    return t('log_absence_add', { employeeName, day: day, reason: t(details.reason) });
                 case 'absence_remove':
-                    return t('log_absence_remove', { employeeName, day: t(details.day) });
+                    return t('log_absence_remove', { employeeName, day: day });
                 case 'staff_add':
                     return t('log_staff_add', { employeeName, area: t(details.area) });
                 case 'staff_edit':
@@ -2165,13 +2255,16 @@
                 return;
             }
 
-            logAction('note_add', { noteText }, null); // No justification needed for manual notes
+            logAction('note_add', { noteText }, null);
             closeModal('note-modal');
         });
 
         // --- INICIALIZACIÓN --- //
         const init = () => {
             loadState();
+            if (!state.currentWeekStartDate) {
+                state.currentWeekStartDate = dateToISOString(getMonday(new Date()));
+            }
             languageSelector.value = state.currentLanguage;
             updateRestaurantControls(state.currentRestaurant);
             updateUIText();
