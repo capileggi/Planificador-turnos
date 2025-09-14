@@ -154,7 +154,7 @@
             color: var(--color-text);
             font-size: 0.875rem;
         }
-        textarea { resize: vertical; min-height: 60px; }
+        textarea { resize: vertical; min-height: 80px; }
         
         input[type="range"] { padding: 0; }
         
@@ -222,50 +222,6 @@
             overflow-x: auto;
         }
         
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: 50px repeat(7, minmax(140px, 1fr));
-            gap: 2px;
-            background-color: var(--color-border);
-            border: 1px solid var(--color-border);
-            min-width: 1000px;
-        }
-
-        .grid-header, .grid-cell, .time-label {
-            background-color: var(--color-secondary);
-            padding: 0.5rem;
-            font-weight: 600;
-            text-align: center;
-            font-size: 0.8rem;
-        }
-        
-        .time-label {
-            font-weight: normal;
-            font-size: 0.75rem;
-            padding: 0.75rem 0.5rem;
-        }
-
-        .grid-cell {
-            background-color: var(--color-surface);
-            min-height: 100px;
-            font-weight: normal;
-            padding: 0.25rem;
-            padding-top: 22px; /* Espacio para el badge */
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            border-radius: 2px;
-            transition: background-color 0.2s;
-        }
-        
-        .cell-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            flex-grow: 1;
-        }
-        
         .employee-chip {
             background-color: var(--color-secondary);
             color: var(--color-text);
@@ -293,49 +249,7 @@
             background-color: #3e444e;
             transform: translateY(-1px);
         }
-
-        .employee-chip.dragging {
-            opacity: 0.5;
-            transform: none;
-        }
         
-        .employee-chip.is-absent {
-            text-decoration: line-through;
-            opacity: 0.6;
-            background-color: var(--color-border);
-            cursor: not-allowed;
-        }
-        .employee-chip.is-absent:hover {
-            transform: none;
-            background-color: var(--color-border);
-        }
-
-        .grid-cell.drag-over {
-            background-color: #3e444e;
-            outline: 2px dashed var(--color-primary-light);
-        }
-        
-        .cell-count-badge {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 10px;
-            color: var(--color-bg);
-            min-width: 18px;
-            text-align: center;
-            line-height: 1;
-        }
-        
-        .cell-count-badge.status-ok { background-color: var(--color-success); }
-        .cell-count-badge.status-warning { background-color: var(--color-warning); }
-        .cell-count-badge.status-deficit { background-color: var(--color-danger); }
-        .cell-count-badge.status-closed { display: none; }
-
-        .status-closed { background-color: var(--color-secondary); }
-
         .kpi-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -507,51 +421,6 @@
         #assignment-grid .assign-cell:hover { background-color: #3e444e; }
         #assignment-grid .assign-cell.is-assigned { background-color: var(--color-primary); }
 
-        /* DEMAND CURVE MODAL STYLES */
-        #demand-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-            width: 100%;
-        }
-
-        #demand-day-selector {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        #demand-day-selector div {
-            display: flex;
-            align-items: center;
-        }
-
-        #demand-day-selector label {
-            padding-left: 0.3rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: var(--color-text-muted);
-        }
-        #demand-day-selector input:checked + label {
-            color: var(--color-text);
-            font-weight: 500;
-        }
-
-        .demand-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .demand-actions .btn {
-            width: auto;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.75rem;
-            margin-top: 0;
-        }
-        
         #absence-list {
             list-style: none;
             margin-top: 1rem;
@@ -636,36 +505,137 @@
             gap: 1rem;
             margin-top: 1rem;
         }
-
-        #employee-list-container {
-            max-height: 25vh;
-            overflow-y: auto;
-            background-color: var(--color-bg);
-            border-radius: 0.375rem;
-            padding: 0.5rem;
+        
+        /* --- VISUAL SCHEDULE (GANTT) STYLES --- */
+        #visual-schedule {
+            font-size: 0.8rem;
+            overflow-x: auto;
+            background-color: var(--color-secondary);
+            border-radius: 6px;
             border: 1px solid var(--color-border);
         }
 
-        #employee-list-container h4 {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--color-text-muted);
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            padding-bottom: 0.25rem;
-            border-bottom: 1px solid var(--color-border);
-        }
-        
-        #employee-list-container h4:first-child {
-            margin-top: 0;
+        .timeline-header, .timeline-row, .area-separator-row {
+            display: grid;
+            grid-template-columns: 220px repeat(7, 1fr);
+            min-width: 1200px;
         }
 
-        #employee-list-container .employee-chip {
-            display: flex;
-            margin-bottom: 5px;
-            text-align: left;
-            padding-left: 10px;
+        .timeline-header {
+            background-color: var(--color-bg);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
+
+        .header-cell, .employee-cell, .day-cell {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--color-border);
+            border-right: 1px solid var(--color-border);
+            text-align: center;
+            font-weight: 600;
+        }
+        .header-cell:last-child, .day-cell:last-child { border-right: none; }
+        .employee-cell { border-right: 1px solid var(--color-border); }
+
+
+        .employee-cell {
+            text-align: left;
+            background-color: var(--color-secondary);
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .employee-cell:hover {
+            background-color: #3e444e;
+        }
+        .employee-cell strong {
+            display: block;
+        }
+        .employee-cell small {
+            color: var(--color-text-muted);
+        }
+        .area-separator-row {
+            grid-column: 1 / -1;
+            background-color: var(--color-bg);
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--color-border);
+            border-top: 2px solid var(--color-border);
+        }
+        .timeline-body > .area-separator-row:first-child { border-top: none; }
+
+        .day-cell {
+            position: relative;
+            padding: 0;
+            min-height: 50px;
+            background-color: var(--color-surface);
+            background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px);
+            background-size: calc(100% / 12) 100%; /* 12 hours from 12 to 24 */
+        }
+        
+        .day-cell.is-absent {
+             background-image: repeating-linear-gradient(
+                45deg,
+                rgba(0,0,0,0.1),
+                rgba(0,0,0,0.1) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            opacity: 0.7;
+        }
+
+        .shift-bar {
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            background-color: var(--color-primary);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.6rem;
+            padding: 0 2px;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+            text-overflow: clip;
+        }
+
+        .timeline-header .header-cell.is-today {
+            border-bottom: 2px solid var(--color-primary-light);
+            color: var(--color-primary-light);
+        }
+
+        .day-cell.is-weekend {
+            background-color: var(--color-bg);
+        }
+
+        .employee-cell .weekly-hours {
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .employee-cell .weekly-hours.is-overtime {
+            color: var(--color-warning);
+        }
+
+        .employee-cell .weekly-hours.is-under-contract {
+            color: var(--color-text-muted);
+        }
+
+        .employee-cell .weekly-hours.is-perfect {
+            color: var(--color-success);
+        }
+
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
@@ -725,21 +695,6 @@
                     <label for="mes-selector"><span data-lang-key="month" id="mes-label-text">Mes</span>: <span id="mes-value" class="value-display"></span></label>
                     <select id="mes-selector"></select>
                 </div>
-                <div class="form-group">
-                    <label for="demanda-slider"><span data-lang-key="dailyDemand">Demanda Diaria</span>: <span id="demanda-value" class="value-display"></span></label>
-                    <input type="range" id="demanda-slider" min="50" max="150" step="1">
-                </div>
-                <div class="form-group">
-                    <label for="capacidad-mozo-slider"><span data-lang-key="waiterCapacity">Capacidad Mozo/Hora</span>: <span id="capacidad-mozo-value" class="value-display"></span></label>
-                    <input type="range" id="capacidad-mozo-slider" min="5" max="20" step="1">
-                </div>
-                <div class="form-group">
-                    <label for="ratio-cocina-slider"><span data-lang-key="kitchenRatio">Ratio Cocina (comensales/cocinero)</span>: <span id="ratio-cocina-value" class="value-display"></span></label>
-                    <input type="range" id="ratio-cocina-slider" min="15" max="35" step="1">
-                </div>
-                 <div class="form-group">
-                    <button id="view-demand-curve-btn" class="btn btn-secondary" data-lang-key="viewDemandCurve">Ver Curva de Demanda</button>
-                </div>
             </div>
 
             <div class="sidebar-section">
@@ -750,34 +705,22 @@
                     Descanso Semanal: 2 días (40hs)
                 </p>
             </div>
-            
-            <div class="sidebar-section">
-                <h3 data-lang-key="staffing">Dotación (Arrastrar o Clic)</h3>
-                <div id="employee-list-container">
-                    <!-- JS will populate this -->
-                </div>
-            </div>
 
             <div class="sidebar-section">
                 <h3 data-lang-key="actions">Acciones</h3>
                 <button id="auto-assign-btn" class="btn btn-primary" data-lang-key="preassignShifts">Preasignar Turnos</button>
                 <button id="clear-schedule-btn" class="btn btn-secondary" data-lang-key="clearSchedule">Limpiar Horario</button>
+                <button id="add-note-btn" class="btn btn-secondary" data-lang-key="addNoteToLogbook">Añadir Nota a Bitácora</button>
             </div>
         </aside>
         <main>
-            <div id="cocina-container">
-                <h2 data-lang-key="kitchen">Cocina</h2>
-                <div class="schedule-grid-container">
-                    <div class="schedule-grid" id="cocina-grid"></div>
+            <div id="visual-schedule-container">
+                <h2 data-lang-key="visualWeeklySchedule">Horario Semanal Visual</h2>
+                <div id="visual-schedule">
+                    <!-- JS will populate this -->
                 </div>
             </div>
-            <div id="salon-container">
-                <h2 data-lang-key="diningRoom">Salón</h2>
-                <div class="schedule-grid-container">
-                    <div class="schedule-grid" id="salon-grid"></div>
-                </div>
-            </div>
-             <div id="kpi-section">
+            <div id="kpi-section">
                 <h2 data-lang-key="kpis">Indicadores Clave de Rendimiento (KPIs)</h2>
                 <div class="kpi-container" id="kpi-container"></div>
             </div>
@@ -798,28 +741,6 @@
     </div>
 
     <!-- Modals -->
-
-    <!-- Justification Modal -->
-    <div id="justification-modal" class="modal">
-        <div class="modal-content modal-sm">
-            <div class="modal-header">
-                <h2 data-lang-key="justifyChange">Justificar Cambio</h2>
-            </div>
-            <div class="modal-body">
-                <p id="justification-prompt-message" style="margin-bottom: 1rem;"></p>
-                <form id="justification-form">
-                    <div class="form-group">
-                        <label for="justification-text" data-lang-key="justificationReason">Motivo de la justificación</label>
-                        <textarea id="justification-text" required></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="justification-cancel-btn" data-lang-key="cancel">Cancelar</button>
-                <button class="btn btn-primary" id="justification-confirm-btn" data-lang-key="confirm">Confirmar</button>
-            </div>
-        </div>
-    </div>
     
     <!-- Logbook Modal -->
     <div id="log-modal" class="modal">
@@ -925,28 +846,6 @@
         </div>
     </div>
 
-    <!-- Demand Curve Modal -->
-    <div id="demand-curve-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" data-modal-id="demand-curve-modal">&times;</span>
-            <div class="modal-header">
-                <h2 data-lang-key="comparativeDemandCurve">Curva de Demanda Comparativa</h2>
-                <div id="demand-controls">
-                    <div id="demand-day-selector">
-                        <!-- JS populates checkboxes -->
-                    </div>
-                    <div class="demand-actions">
-                        <button id="demand-select-all" class="btn btn-secondary" data-lang-key="all">Todos</button>
-                        <button id="demand-select-none" class="btn btn-secondary" data-lang-key="none">Ninguno</button>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body">
-                <canvas id="demand-chart"></canvas>
-            </div>
-        </div>
-    </div>
-    
     <!-- Absence Registration Modal -->
     <div id="absence-modal" class="modal">
         <div class="modal-content modal-sm">
@@ -979,6 +878,28 @@
         </div>
     </div>
 
+    <!-- Note Modal -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content modal-sm">
+            <span class="modal-close" data-modal-id="note-modal">&times;</span>
+            <div class="modal-header">
+                <h2 data-lang-key="addNoteModalTitle">Añadir Nota a Bitácora</h2>
+            </div>
+            <div class="modal-body">
+                <form id="note-form">
+                    <div class="form-group">
+                        <label for="note-textarea" data-lang-key="note">Nota</label>
+                        <textarea id="note-textarea" required data-lang-key-placeholder="notePlaceholder"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-modal-id="note-modal" data-lang-key="cancel">Cancelar</button>
+                <button class="btn btn-primary" id="note-save-btn" data-lang-key="save">Guardar</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -990,12 +911,7 @@
             manageStaff: { es: 'Gestionar Personal', pt: 'Gerenciar Equipe' },
             parameters: { es: 'Parámetros', pt: 'Parâmetros' },
             month: { es: 'Mes', pt: 'Mês' },
-            dailyDemand: { es: 'Demanda Diaria', pt: 'Demanda Diária' },
-            waiterCapacity: { es: 'Capacidad Mozo/Hora', pt: 'Capacidade Garçom/Hora' },
-            kitchenRatio: { es: 'Ratio Cocina (comensales/cocinero)', pt: 'Ratio Cozinha (clientes/cozinheiro)' },
-            viewDemandCurve: { es: 'Ver Curva de Demanda', pt: 'Ver Curva de Demanda' },
             rules: { es: 'Reglas', pt: 'Regras' },
-            staffing: { es: 'Dotación (Arrastrar o Clic)', pt: 'Equipe (Arrastar ou Clicar)' },
             actions: { es: 'Acciones', pt: 'Ações' },
             preassignShifts: { es: 'Preasignar Turnos', pt: 'Pré-atribuir Turnos' },
             clearSchedule: { es: 'Limpiar Horario', pt: 'Limpar Horário' },
@@ -1003,6 +919,7 @@
             diningRoom: { es: 'Salón', pt: 'Salão' },
             kpis: { es: 'Indicadores Clave de Rendimiento (KPIs)', pt: 'Indicadores Chave de Performance (KPIs)' },
             weeklyEmployeeLoad: { es: 'Carga Semanal por Empleado', pt: 'Carga Semanal por Funcionário' },
+            visualWeeklySchedule: { es: 'Horario Semanal Visual', pt: 'Horário Semanal Visual' },
             name: { es: 'Nombre', pt: 'Nome' },
             role: { es: 'Rol', pt: 'Função' },
             contractHours: { es: 'Horas de Contrato', pt: 'Horas de Contrato' },
@@ -1017,6 +934,7 @@
             exportPDF: { es: 'Exportar PDF', pt: 'Exportar PDF' },
             registerAbsence: { es: 'Registrar Ausencia', pt: 'Registrar Ausência' },
             completeAllFields: { es: 'Por favor, completa todos los campos.', pt: 'Por favor, preencha todos os campos.' },
+            pleaseWriteANote: { es: 'Por favor, escribe una nota.', pt: 'Por favor, escreva uma nota.' },
             confirmDeleteEmployee: { es: '¿Seguro que quieres eliminar a este empleado? Esta acción no se puede deshacer.', pt: 'Tem certeza de que deseja excluir este funcionário? Esta ação não pode ser desfeita.' },
             employeeCannotBeAssigned: { es: '{employeeName} ({employeeArea}) no puede ser asignado a {targetArea}.', pt: '{employeeName} ({employeeArea}) não pode ser atribuído a {targetArea}.' },
             // Días y Meses
@@ -1043,7 +961,7 @@
             coverage: { es: 'Cobertura', pt: 'Cobertura' },
             deficit: { es: 'Déficit (horas-persona)', pt: 'Déficit (horas-pessoa)' },
             excess: { es: 'Exceso (horas-persona)', pt: 'Excesso (horas-pessoa)' },
-            absenteeismHours: { es: 'Horas de Ausentismo', pt: 'Horas de Ausentismo' },
+            absenteeismHours: { es: 'Horas de Ausentismo', pt: 'Horas de Absenteísmo' },
             // Staff Modal
             addToKitchen: { es: 'Añadir a Cocina', pt: 'Adicionar à Cozinha' },
             addToDiningRoom: { es: 'Añadir a Salón', pt: 'Adicionar ao Salão' },
@@ -1052,12 +970,6 @@
             // Assignment Modal
             assignShiftsFor: { es: 'Asignar Turnos: {employeeName}', pt: 'Atribuir Turnos: {employeeName}' },
             assignedHoursOf: { es: 'Horas Asignadas: {assigned} / {contract}', pt: 'Horas Atribuídas: {assigned} / {contract}' },
-            // Demand Curve Modal
-            comparativeDemandCurve: { es: 'Curva de Demanda Comparativa', pt: 'Curva de Demanda Comparativa' },
-            all: { es: 'Todos', pt: 'Todos' },
-            none: { es: 'Ninguno', pt: 'Nenhum' },
-            demandInComensales: { es: 'Nº de Comensales', pt: 'Nº de Clientes' },
-            hourOfDay: { es: 'Hora del Día', pt: 'Hora do Dia' },
             // Absence Modal
             registerAbsenceFor: { es: 'Registrar Ausencia: {employeeName}', pt: 'Registrar Ausência: {employeeName}' },
             day: { es: 'Día', pt: 'Dia' },
@@ -1070,6 +982,11 @@
             vacation: { es: 'Vacaciones', pt: 'Férias' },
             personalMatter: { es: 'Asunto Personal', pt: 'Assunto Pessoal' },
             other: { es: 'Otro', pt: 'Outro' },
+            // Note Modal
+            addNoteToLogbook: { es: 'Añadir Nota a Bitácora', pt: 'Adicionar Nota ao Log' },
+            addNoteModalTitle: { es: 'Añadir Nota a Bitácora', pt: 'Adicionar Nota ao Log' },
+            note: { es: 'Nota', pt: 'Nota' },
+            notePlaceholder: { es: 'Escribe tu nota aquí...', pt: 'Escreva sua nota aqui...' },
             // Rules text
             rulesText: { es: 'Descanso Mínimo: 11hs<br>Máx. Diario: 8hs<br>Descanso Semanal: 2 días (40hs)', pt: 'Descanso Mínimo: 11hs<br>Máx. Diário: 8hs<br>Descanso Semanal: 2 dias (40hs)' },
             // PDF Export
@@ -1083,9 +1000,7 @@
             totalAssignedHours: { es: 'Total de Horas Asignadas:', pt: 'Total de Horas Atribuídas:' },
             contractHoursPDF: { es: 'Horas de Contrato:', pt: 'Horas de Contrato:' },
             balancePDF: { es: 'Balance:', pt: 'Saldo:' },
-             // Logbook & Justification
-            justifyChange: { es: 'Justificar Cambio', pt: 'Justificar Alteração' },
-            justificationReason: { es: 'Motivo de la justificación', pt: 'Motivo da justificação' },
+             // Logbook
             changeLogbook: { es: 'Bitácora de Cambios', pt: 'Log de Alterações' },
             actionType: { es: 'Tipo de Acción', pt: 'Tipo de Ação' },
             startDate: { es: 'Fecha Inicio', pt: 'Data de Início' },
@@ -1094,23 +1009,22 @@
             allEmployees: { es: 'Todos los empleados', pt: 'Todos os funcionários' },
             allTypes: { es: 'Todos los tipos', pt: 'Todos os tipos' },
             noLogsFound: { es: 'No se encontraron registros con los filtros aplicados.', pt: 'Nenhum registro encontrado com os filtros aplicados.' },
-            log_shift_add: { es: '{employeeName} asignado a {area} el {day} a las {hour}.', pt: '{employeeName} atribuído a {area} na {day} às {hour}.' },
-            log_shift_remove: { es: '{employeeName} removido de {area} el {day} a las {hour}.', pt: '{employeeName} removido de {area} na {day} às {hour}.' },
+            log_shift_add: { es: '{employeeName} asignado a {area} el {day} a las {hour}.', pt: '{employeeName} atribuído a {area} em {day} às {hour}.' },
+            log_shift_remove: { es: '{employeeName} removido de {area} el {day} a las {hour}.', pt: '{employeeName} removido de {area} em {day} às {hour}.' },
             log_shift_move: { es: '{employeeName} movido de {sourceArea} ({sourceDay} {sourceHour}) a {targetArea} ({targetDay} {targetHour}).', pt: '{employeeName} movido de {sourceArea} ({sourceDay} {sourceHour}) para {targetArea} ({targetDay} {targetHour}).' },
             log_schedule_clear: { es: 'Horario limpiado para el restaurante {restaurantName}.', pt: 'Horário limpo para o restaurante {restaurantName}.' },
             log_schedule_preassign: { es: 'Preasignación de turnos ejecutada para {restaurantName}.', pt: 'Pré-atribuição de turnos executada para {restaurantName}.' },
-            log_absence_add: { es: 'Ausencia registrada para {employeeName} el {day} (Motivo: {reason}).', pt: 'Ausência registrada para {employeeName} na {day} (Motivo: {reason}).' },
-            log_absence_remove: { es: 'Ausencia eliminada para {employeeName} el {day}.', pt: 'Ausência removida para {employeeName} na {day}.' },
-            log_staff_add: { es: 'Empleado añadido: {employeeName} a {area}.', pt: 'Funcionário adicionado: {employeeName} a {area}.' },
+            log_absence_add: { es: 'Ausencia registrada para {employeeName} el {day} (Motivo: {reason}).', pt: 'Ausência registrada para {employeeName} em {day} (Motivo: {reason}).' },
+            log_absence_remove: { es: 'Ausencia eliminada para {employeeName} el {day}.', pt: 'Ausência removida para {employeeName} em {day}.' },
+            log_staff_add: { es: 'Empleado añadido: {employeeName} a {area}.', pt: 'Funcionário adicionado: {employeeName} à {area}.' },
             log_staff_edit: { es: 'Datos de {employeeName} actualizados.', pt: 'Dados de {employeeName} atualizados.' },
             log_staff_remove: { es: 'Empleado eliminado: {employeeName}.', pt: 'Funcionário removido: {employeeName}.' },
+            log_note_add: { es: 'Nota añadida: "{noteText}"', pt: 'Nota adicionada: "{noteText}"' },
             log_type_shift: { es: 'Cambios de Turno', pt: 'Alterações de Turno' },
             log_type_absence: { es: 'Ausencias', pt: 'Ausências' },
             log_type_staff: { es: 'Gestión de Personal', pt: 'Gerenciamento de Equipe' },
             log_type_schedule: { es: 'Horario General', pt: 'Horário Geral' },
-            prompt_justify_clear: { es: 'Estás a punto de limpiar todo el horario. Por favor, introduce una justificación.', pt: 'Você está prestes a limpar todo o horário. Por favor, insira uma justificativa.' },
-            prompt_justify_absence: { es: 'Vas a registrar una ausencia para {employeeName} el {day}. Por favor, justifica la acción.', pt: 'Você vai registrar uma ausência para {employeeName} na {day}. Por favor, justifique a ação.' },
-            prompt_justify_assignment: { es: 'Estás modificando los turnos de {employeeName}. Por favor, introduce una justificación.', pt: 'Você está modificando os turnos de {employeeName}. Por favor, insira uma justificativa.' },
+            log_type_note: { es: 'Notas Manuales', pt: 'Notas Manuais' },
         };
         
         // --- DATOS INICIALES (si no hay nada en localStorage) --- //
@@ -1211,19 +1125,13 @@
         const restaurantTabs = document.getElementById('restaurant-tabs');
         const restaurantSelectorMobile = document.getElementById('restaurant-selector-mobile');
         const mesSelector = document.getElementById('mes-selector');
-        const demandaSlider = document.getElementById('demanda-slider');
-        const capacidadMozoSlider = document.getElementById('capacidad-mozo-slider');
-        const ratioCocinaSlider = document.getElementById('ratio-cocina-slider');
         const autoAssignBtn = document.getElementById('auto-assign-btn');
         const clearScheduleBtn = document.getElementById('clear-schedule-btn');
-        const cocinaGrid = document.getElementById('cocina-grid');
-        const salonGrid = document.getElementById('salon-grid');
         const kpiContainer = document.getElementById('kpi-container');
         const employeeLoadBody = document.getElementById('employee-load-body');
-        const employeeListContainer = document.getElementById('employee-list-container');
         const manageStaffBtn = document.getElementById('manage-staff-btn');
-        const viewDemandCurveBtn = document.getElementById('view-demand-curve-btn');
         const logbookBtn = document.getElementById('logbook-btn');
+        const addNoteBtn = document.getElementById('add-note-btn');
 
         // --- LÓGICA DE CÁLCULO --- //
         const employeeColorCache = {};
@@ -1318,7 +1226,7 @@
             assignAreaWithSplitShifts('cocina');
             assignAreaWithSplitShifts('salon');
             
-            logAction('schedule_preassign', { restaurantName: state.currentRestaurant }, t('preassignShifts'));
+            logAction('schedule_preassign', { restaurantName: state.currentRestaurant }, null);
             fullRender();
         };
 
@@ -1412,104 +1320,116 @@
 
         // --- LÓGICA DE RENDERIZADO --- //
         
-        const renderEmployeeList = () => {
-            employeeListContainer.innerHTML = '';
+        const renderUnifiedSchedule = () => {
+            const container = document.getElementById('visual-schedule');
+            container.innerHTML = '';
             const restaurant = state.currentRestaurant;
-            const { cocina, salon } = state.dotacion[restaurant];
+            const allEmployees = state.dotacion[restaurant];
 
-            const createListForArea = (areaTitle, employees, areaKey) => {
-                const title = document.createElement('h4');
-                title.textContent = t(areaKey);
-                employeeListContainer.appendChild(title);
+            // Get current day for highlighting
+            const todayIndex = (new Date().getDay() + 6) % 7; // Make Monday 0, Sunday 6
+            const todayKey = DIAS_KEYS[todayIndex];
 
-                employees.forEach(employee => {
-                    const chip = document.createElement('div');
-                    chip.className = 'employee-chip';
-                    chip.innerHTML = `<span class="employee-color-dot" style="background-color: ${getColorForEmployee(employee.id)};"></span><span>${employee.nombre}</span>`;
-                    chip.draggable = true;
-                    chip.dataset.employeeId = employee.id;
-                    chip.title = `${employee.nombre} (${employee.rol})`;
-                    employeeListContainer.appendChild(chip);
-                });
-            };
-
-            createListForArea('Cocina', cocina, 'kitchen');
-            createListForArea('Salón', salon, 'diningRoom');
-        };
-        
-        const renderGrid = (gridElement, area) => {
-            gridElement.innerHTML = '';
-            gridElement.appendChild(document.createElement('div'));
+            // Create Header
+            const header = document.createElement('div');
+            header.className = 'timeline-header';
+            header.innerHTML = `<div class="header-cell employee-cell-header">${t('employee')}</div>`;
             DIAS_KEYS.forEach(diaKey => {
-                const header = document.createElement('div');
-                header.className = 'grid-header';
-                header.textContent = t(diaKey);
-                gridElement.appendChild(header);
+                const isTodayClass = diaKey === todayKey ? ' is-today' : '';
+                header.innerHTML += `<div class="header-cell${isTodayClass}">${t(diaKey)}</div>`;
             });
+            container.appendChild(header);
 
-            HORAS.forEach(hora => {
-                const timeLabel = document.createElement('div');
-                timeLabel.className = 'time-label';
-                timeLabel.textContent = hora;
-                gridElement.appendChild(timeLabel);
+            // Create Body
+            const body = document.createElement('div');
+            body.className = 'timeline-body';
 
-                DIAS_KEYS.forEach(dia => {
-                    const cell = document.createElement('div');
-                    cell.className = 'grid-cell';
-                    cell.dataset.dia = dia;
-                    cell.dataset.hora = hora;
-                    cell.dataset.area = area;
+            ['cocina', 'salon'].forEach(area => {
+                const employeesInArea = allEmployees[area];
+                if (employeesInArea.length === 0) return;
+
+                const areaSeparator = document.createElement('div');
+                areaSeparator.className = 'area-separator-row';
+                areaSeparator.innerHTML = `<span>${t(area === 'cocina' ? 'kitchen' : 'diningRoom')}</span>`;
+                body.appendChild(areaSeparator);
+
+                employeesInArea.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(employee => {
+                    const employeeShifts = getConsolidatedShifts(employee.id);
+
+                    const row = document.createElement('div');
+                    row.className = 'timeline-row';
+                    row.dataset.employeeId = employee.id;
                     
-                    const reqs = calculateRequirements(state.currentRestaurant, dia, hora);
-                    const required = area === 'cocina' ? reqs.reqCocina : reqs.reqSalon;
-                    const scheduleForSlot = state.schedule[state.currentRestaurant][area]?.[dia]?.[hora] || [];
-                    const effectiveAssignedCount = scheduleForSlot.filter(id => !isEmployeeAbsent(id, dia)).length;
-                    
-                    const cellContent = document.createElement('div');
-                    cellContent.className = 'cell-content';
-                    cell.appendChild(cellContent);
+                    const assignedHours = employeeShifts.reduce((acc, shift) => acc + shift.duration, 0);
 
-                    scheduleForSlot.forEach(employeeId => {
-                        const employee = getEmployeeById(employeeId);
-                        if (employee) {
-                            const chip = document.createElement('div');
-                            chip.className = 'employee-chip';
-                            const isAbsent = isEmployeeAbsent(employeeId, dia);
-                            if (isAbsent) {
-                                chip.classList.add('is-absent');
-                                chip.title = `${employee.nombre} (AUSENTE)`;
-                                chip.draggable = false;
-                            } else {
-                                chip.draggable = true;
-                                chip.title = `${employee.nombre} (${employee.rol})`;
-                            }
-                            chip.innerHTML = `<span class="employee-color-dot" style="background-color: ${getColorForEmployee(employeeId)};"></span><span>${employee.nombre}</span>`;
-                            chip.dataset.employeeId = employeeId;
-                            cellContent.appendChild(chip);
-                        }
-                    });
-
-                    const badge = document.createElement('div');
-                    badge.className = 'cell-count-badge';
-                    badge.textContent = `${effectiveAssignedCount}/${required}`;
-                    cell.appendChild(badge);
-
-                    let statusClass = '';
-                    if (required === 0) {
-                        statusClass = 'status-closed';
-                        cell.classList.add('status-closed');
-                    } else if (effectiveAssignedCount >= required) {
-                        statusClass = 'status-ok';
-                    } else if (effectiveAssignedCount > 0) {
-                        statusClass = 'status-warning';
-                    } else {
-                        statusClass = 'status-deficit';
+                    // Determine class for hours summary
+                    let hoursClass = 'is-under-contract';
+                    if (assignedHours > employee.contratoSem) {
+                        hoursClass = 'is-overtime';
+                    } else if (assignedHours === employee.contratoSem) {
+                        hoursClass = 'is-perfect';
                     }
-                    badge.classList.add(statusClass);
 
-                    gridElement.appendChild(cell);
+                    const employeeCell = document.createElement('div');
+                    employeeCell.className = 'employee-cell';
+                    employeeCell.innerHTML = `
+                        <strong>${employee.nombre}</strong>
+                        <small>${employee.rol}</small>
+                        <small class="weekly-hours ${hoursClass}">${assignedHours} / ${employee.contratoSem} hs</small>
+                    `;
+                    employeeCell.addEventListener('click', () => openAssignmentModal(employee.id));
+                    row.appendChild(employeeCell);
+
+                    DIAS_KEYS.forEach(diaKey => {
+                        const dayCell = document.createElement('div');
+                        const isWeekend = diaKey === 'sábado' || diaKey === 'domingo';
+                        dayCell.className = `day-cell${isWeekend ? ' is-weekend' : ''}`;
+
+                        dayCell.dataset.dia = diaKey;
+                        
+                        const isAbsentToday = isEmployeeAbsent(employee.id, diaKey);
+                        if(isAbsentToday){
+                            dayCell.classList.add('is-absent');
+                            const absenceInfo = state.absences[restaurant][employee.id].find(a => a.dia === diaKey);
+                            dayCell.title = `AUSENTE: ${absenceInfo.motivo}`;
+                        }
+
+                        const shiftsForDay = employeeShifts.filter(s => s.dia === diaKey);
+                        
+                        shiftsForDay.forEach(shift => {
+                            const shiftBar = document.createElement('div');
+                            shiftBar.className = 'shift-bar';
+                            
+                            const startHour = parseInt(shift.startTime.split(':')[0]);
+                            const endHour = parseInt(shift.endTime.split(':')[0]);
+                            const duration = shift.duration;
+
+                            const left = ((startHour - 12) / 12) * 100;
+                            const width = (duration / 12) * 100;
+
+                            shiftBar.style.left = `${left}%`;
+                            shiftBar.style.width = `${width}%`;
+                            shiftBar.style.backgroundColor = getColorForEmployee(employee.id);
+                            
+                            let barText = '';
+                            if (duration >= 5) {
+                                barText = `${shift.startTime} - ${shift.endTime}`;
+                            } else if (duration >= 2) {
+                                barText = `${startHour}-${endHour}`;
+                            } // For 1-hour shifts, text remains empty.
+                            
+                            shiftBar.textContent = barText;
+                            shiftBar.title = `${employee.nombre} (${employee.rol}) | ${shift.startTime} - ${shift.endTime} (${duration}hs)`;
+
+                            dayCell.appendChild(shiftBar);
+                        });
+
+                        row.appendChild(dayCell);
+                    });
+                    body.appendChild(row);
                 });
             });
+            container.appendChild(body);
         };
         
         const renderKPIs = () => {
@@ -1602,24 +1522,21 @@
             const params = state.params;
             mesSelector.value = params.mes;
             document.getElementById('mes-value').textContent = t(params.mes.toLowerCase());
-            demandaSlider.value = params.demandaDiaria;
-            document.getElementById('demanda-value').textContent = params.demandaDiaria;
-            capacidadMozoSlider.value = params.capacidadMozoPorHora;
-            document.getElementById('capacidad-mozo-value').textContent = params.capacidadMozoPorHora;
-            ratioCocinaSlider.value = params.ratioCocina;
-            document.getElementById('ratio-cocina-value').textContent = params.ratioCocina;
         };
         
         const updateUIText = () => {
             document.documentElement.lang = state.currentLanguage;
             document.querySelectorAll('[data-lang-key]').forEach(el => {
                 const key = el.dataset.langKey;
-                // Special handling for labels with spans inside
                 if (el.querySelector('span[data-lang-key]')) {
                      el.querySelector('span[data-lang-key]').textContent = t(key);
                 } else {
                      el.textContent = t(key);
                 }
+            });
+             document.querySelectorAll('[data-lang-key-placeholder]').forEach(el => {
+                const key = el.dataset.langKeyPlaceholder;
+                el.placeholder = t(key);
             });
             document.getElementById('rules-text').innerHTML = t('rulesText');
             document.getElementById('logbook-btn').title = t('changeLogbook');
@@ -1628,9 +1545,7 @@
         };
 
         const fullRender = () => {
-            renderGrid(cocinaGrid, 'cocina');
-            renderGrid(salonGrid, 'salon');
-            renderEmployeeList();
+            renderUnifiedSchedule();
             renderKPIs();
             renderEmployeeLoad();
             updateSidebar();
@@ -1645,11 +1560,9 @@
         });
 
         const updateRestaurantControls = (newRestaurant) => {
-            // Update desktop tabs
             document.querySelectorAll('#restaurant-tabs .tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.restaurant === newRestaurant);
             });
-            // Update mobile select
             restaurantSelectorMobile.value = newRestaurant;
         };
 
@@ -1673,89 +1586,23 @@
         });
 
         const handleParamChange = (param, value) => {
-            state.params[param] = (param === 'mes') ? value : parseInt(value, 10);
+            state.params[param] = value;
             fullRender();
         };
         
         mesSelector.addEventListener('change', e => handleParamChange('mes', e.target.value));
-        demandaSlider.addEventListener('input', e => handleParamChange('demandaDiaria', e.target.value));
-        capacidadMozoSlider.addEventListener('input', e => handleParamChange('capacidadMozoPorHora', e.target.value));
-        ratioCocinaSlider.addEventListener('input', e => handleParamChange('ratioCocina', e.target.value));
         
         autoAssignBtn.addEventListener('click', autoAssign);
         
         clearScheduleBtn.addEventListener('click', () => {
-             const action = () => {
-                state.schedule[state.currentRestaurant] = { cocina: {}, salon: {} };
-                fullRender();
-            };
             const details = { restaurantName: state.currentRestaurant };
-            promptForJustification('schedule_clear', details, t('prompt_justify_clear'), action);
-        });
-
-        // --- DRAG & DROP --- //
-        let draggedElement = null;
-        document.addEventListener('dragstart', e => { 
-            const chip = e.target.closest('.employee-chip');
-            if (chip && !chip.classList.contains('is-absent')) { 
-                draggedElement = chip; 
-                setTimeout(() => chip.classList.add('dragging'), 0); 
-            } 
-        });
-        document.addEventListener('dragend', () => { if (draggedElement) { draggedElement.classList.remove('dragging'); draggedElement = null; } document.querySelectorAll('.grid-cell.drag-over').forEach(c => c.classList.remove('drag-over')); });
-        document.addEventListener('dragover', e => { e.preventDefault(); if (e.target.closest('.grid-cell')) e.dataTransfer.dropEffect = 'move'; });
-        document.addEventListener('dragenter', e => { e.preventDefault(); e.target.closest('.grid-cell')?.classList.add('drag-over'); });
-        document.addEventListener('dragleave', e => { e.target.closest('.grid-cell')?.classList.remove('drag-over'); });
-        document.addEventListener('drop', e => {
-            e.preventDefault();
-            const targetCell = e.target.closest('.grid-cell');
-            if (!targetCell || !draggedElement) return;
-            targetCell.classList.remove('drag-over');
-
-            const employeeId = draggedElement.dataset.employeeId;
-            const sourceCell = draggedElement.closest('.grid-cell');
-            const { dia: targetDia, hora: targetHora, area: targetArea } = targetCell.dataset;
-            const restaurant = state.currentRestaurant;
+            logAction('schedule_clear', details, null);
             
-            const employee = getEmployeeById(employeeId);
-            const employeeArea = getEmployeeArea(employeeId);
-            if (employeeArea !== targetArea) {
-                alert(t('employeeCannotBeAssigned', {employeeName: employee.nombre, employeeArea: t(employeeArea), targetArea: t(targetArea)}));
-                return;
-            }
-
-            const action = () => {
-                if (sourceCell) {
-                    const { dia: sourceDia, hora: sourceHora, area: sourceArea } = sourceCell.dataset;
-                    const sourceAssignments = state.schedule[restaurant][sourceArea]?.[sourceDia]?.[sourceHora];
-                    if (sourceAssignments) {
-                        const index = sourceAssignments.indexOf(employeeId);
-                        if (index > -1) sourceAssignments.splice(index, 1);
-                    }
-                }
-                
-                if (!state.schedule[restaurant][targetArea][targetDia]) state.schedule[restaurant][targetArea][targetDia] = {};
-                if (!state.schedule[restaurant][targetArea][targetDia][targetHora]) state.schedule[restaurant][targetArea][targetDia][targetHora] = [];
-                
-                const targetAssignments = state.schedule[restaurant][targetArea][targetDia][targetHora];
-                if (!targetAssignments.includes(employeeId)) targetAssignments.push(employeeId);
-                fullRender();
-            };
-
-            const details = {
-                employeeId,
-                targetArea, targetDay: targetDia, targetHour: targetHora
-            };
-            if(sourceCell) {
-                const {dia, hora, area} = sourceCell.dataset;
-                details.sourceArea = area;
-                details.sourceDay = dia;
-                details.sourceHour = hora;
-            }
-            
-            promptForJustification(sourceCell ? 'shift_move' : 'shift_add', details, t('prompt_justify_assignment', {employeeName: employee.nombre}), action);
+            state.schedule[state.currentRestaurant] = { cocina: {}, salon: {} };
+            fullRender();
         });
-        
+
+
         // --- GESTIÓN DE MODALES --- //
         const openModal = (modalId) => document.getElementById(modalId).classList.add('is-visible');
         const closeModal = (modalId) => document.getElementById(modalId).classList.remove('is-visible');
@@ -1763,35 +1610,12 @@
         document.querySelectorAll('.modal-close').forEach(el => {
             el.addEventListener('click', (e) => closeModal(e.target.dataset.modalId));
         });
-        
-        // --- JUSTIFICATION MODAL --- //
-        const justificationModal = document.getElementById('justification-modal');
-        const justificationText = document.getElementById('justification-text');
-        const justificationConfirmBtn = document.getElementById('justification-confirm-btn');
-        const justificationCancelBtn = document.getElementById('justification-cancel-btn');
-        let justificationCallback = null;
-
-        const promptForJustification = (type, details, message, onConfirm) => {
-            document.getElementById('justification-prompt-message').textContent = message;
-            justificationText.value = '';
-            
-            justificationCallback = () => {
-                const reason = justificationText.value.trim();
-                if (reason) {
-                    logAction(type, details, reason);
-                    onConfirm();
-                    closeModal('justification-modal');
-                } else {
-                    alert('Por favor, introduce una justificación.');
-                }
-            };
-            openModal('justification-modal');
-        };
-
-        justificationConfirmBtn.addEventListener('click', () => {
-            if (justificationCallback) justificationCallback();
+        document.body.addEventListener('click', e => {
+            const cancelBtn = e.target.closest('.modal-footer .btn-secondary');
+            if(cancelBtn && cancelBtn.dataset.modalId) {
+                closeModal(cancelBtn.dataset.modalId);
+            }
         });
-        justificationCancelBtn.addEventListener('click', () => closeModal('justification-modal'));
 
         // --- LÓGICA DE GESTIÓN DE PERSONAL (STAFF) --- //
         manageStaffBtn.addEventListener('click', () => {
@@ -1874,12 +1698,12 @@
                 const employeeIndex = state.dotacion[restaurant][area].findIndex(e => e.id === id);
                 if (employeeIndex > -1) {
                     state.dotacion[restaurant][area][employeeIndex] = { ...state.dotacion[restaurant][area][employeeIndex], ...employeeData };
-                     logAction('staff_edit', { employeeId: id, employeeName: employeeData.nombre }, "Actualización de datos desde modal.");
+                     logAction('staff_edit', { employeeId: id, employeeName: employeeData.nombre }, null);
                 }
             } else {
                 employeeData.id = 'E' + Date.now();
                 state.dotacion[restaurant][area].push(employeeData);
-                logAction('staff_add', { employeeId: employeeData.id, employeeName: employeeData.nombre, area }, "Nuevo empleado añadido.");
+                logAction('staff_add', { employeeId: employeeData.id, employeeName: employeeData.nombre, area }, null);
             }
             renderStaffModal();
             closeModal('staff-edit-modal');
@@ -1892,10 +1716,8 @@
             const restaurant = state.currentRestaurant;
             const employee = getEmployeeById(employeeId);
             
-            // Log before deleting
-            logAction('staff_remove', { employeeId: employee.id, employeeName: employee.nombre }, "Empleado eliminado del sistema.");
+            logAction('staff_remove', { employeeId: employee.id, employeeName: employee.nombre }, null);
 
-            // Remove from schedule
             ['cocina', 'salon'].forEach(area => {
                 if (!state.schedule[restaurant][area]) return;
                 Object.keys(state.schedule[restaurant][area]).forEach(dia => {
@@ -1905,13 +1727,11 @@
                 });
             });
 
-            // Remove from dotacion
             const employeeArea = getEmployeeArea(employeeId);
             if (employeeArea) {
                  state.dotacion[restaurant][employeeArea] = state.dotacion[restaurant][employeeArea].filter(e => e.id !== employeeId);
             }
             
-            // Remove absences
             if (state.absences[restaurant]?.[employeeId]) {
                 delete state.absences[restaurant][employeeId];
             }
@@ -1922,17 +1742,6 @@
 
         // --- LÓGICA DE ASIGNACIÓN POR CLIC --- //
         let currentAssignmentState = { employeeId: null, tempSchedule: {} };
-        
-        document.body.addEventListener('click', e => {
-            const chip = e.target.closest('.employee-chip');
-            if (chip && chip.dataset.employeeId && !chip.classList.contains('is-absent')) {
-                openAssignmentModal(chip.dataset.employeeId);
-            }
-            const cancelBtn = e.target.closest('.modal-footer .btn-secondary');
-            if(cancelBtn && cancelBtn.dataset.modalId) {
-                closeModal(cancelBtn.dataset.modalId);
-            }
-        });
         
         const openAssignmentModal = (employeeId) => {
             const employee = getEmployeeById(employeeId);
@@ -1986,128 +1795,44 @@
         document.getElementById('assignment-save-btn').addEventListener('click', () => {
             const employeeId = currentAssignmentState.employeeId;
             const employee = getEmployeeById(employeeId);
+            logAction('shift_move', { employeeId }, null);
 
-            const action = () => {
-                const restaurant = state.currentRestaurant;
-                const area = document.getElementById('assignment-grid').dataset.area;
-                
-                // Clear existing assignments for this employee
-                DIAS_KEYS.forEach(dia => {
-                    HORAS.forEach(hora => {
-                        const assignments = state.schedule[restaurant][area]?.[dia]?.[hora];
-                        if (assignments) {
-                            const index = assignments.indexOf(employeeId);
-                            if (index > -1) assignments.splice(index, 1);
-                        }
-                    });
-                });
-                
-                // Add new assignments
-                document.querySelectorAll('#assignment-grid .assign-cell.is-assigned').forEach(cell => {
-                    const { dia, hora } = cell.dataset;
-                    if (!state.schedule[restaurant][area][dia]) state.schedule[restaurant][area][dia] = {};
-                    if (!state.schedule[restaurant][area][dia][hora]) state.schedule[restaurant][area][dia][hora] = [];
-                    if (!state.schedule[restaurant][area][dia][hora].includes(employeeId)) {
-                        state.schedule[restaurant][area][dia][hora].push(employeeId);
+            const restaurant = state.currentRestaurant;
+            const area = document.getElementById('assignment-grid').dataset.area;
+            
+            DIAS_KEYS.forEach(dia => {
+                HORAS.forEach(hora => {
+                    const assignments = state.schedule[restaurant][area]?.[dia]?.[hora];
+                    if (assignments) {
+                        const index = assignments.indexOf(employeeId);
+                        if (index > -1) assignments.splice(index, 1);
                     }
                 });
-                
-                closeModal('assignment-modal');
-                fullRender();
-            };
-            promptForJustification('shift_move', {employeeId}, t('prompt_justify_assignment', {employeeName: employee.nombre}), action);
-        });
-
-        // --- LÓGICA GRÁFICO DE DEMANDA --- //
-        let demandChartInstance = null;
-        
-        viewDemandCurveBtn.addEventListener('click', () => {
-            openDemandCurveModal();
-        });
-
-        document.getElementById('demand-curve-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'demand-select-all') {
-                document.querySelectorAll('#demand-day-selector input[type="checkbox"]').forEach(cb => cb.checked = true);
-                renderDemandChart();
-            }
-            if (e.target.id === 'demand-select-none') {
-                document.querySelectorAll('#demand-day-selector input[type="checkbox"]').forEach(cb => cb.checked = false);
-                renderDemandChart();
-            }
-        });
-
-        document.getElementById('demand-curve-modal').addEventListener('change', (e) => {
-            if (e.target.matches('#demand-day-selector input[type="checkbox"]')) {
-                renderDemandChart();
-            }
-        });
-
-        const openDemandCurveModal = () => {
-            const daySelector = document.getElementById('demand-day-selector');
-            daySelector.innerHTML = '';
-            DIAS_KEYS.forEach((diaKey, index) => {
-                const container = document.createElement('div');
-                const id = `demand-day-check-${diaKey}`;
-                container.innerHTML = `
-                    <input type="checkbox" id="${id}" value="${diaKey}" ${index === 0 ? 'checked' : ''} style="cursor: pointer;">
-                    <label for="${id}">${t(diaKey)}</label>
-                `;
-                daySelector.appendChild(container);
             });
-            renderDemandChart();
-            openModal('demand-curve-modal');
-        };
-        
-        const renderDemandChart = () => {
-            const restaurant = state.currentRestaurant;
-            const selectedDays = Array.from(document.querySelectorAll('#demand-day-selector input:checked')).map(cb => cb.value);
-
-            const datasets = selectedDays.map(dia => {
-                const demandData = HORAS.map(hora => calculateHourlyDemand(restaurant, dia, hora));
-                const colorIndex = DIAS_KEYS.indexOf(dia);
-                const color = COLORS[colorIndex % COLORS.length];
-
-                return {
-                    label: t(dia),
-                    data: demandData,
-                    backgroundColor: color + '33',
-                    borderColor: color,
-                    borderWidth: 2,
-                    tension: 0.3,
-                    pointBackgroundColor: color,
-                    pointRadius: selectedDays.length > 1 ? 2 : 4,
-                    pointHoverRadius: selectedDays.length > 1 ? 5 : 7,
-                };
-            });
-
-            const ctx = document.getElementById('demand-chart').getContext('2d');
-            if (demandChartInstance) {
-                demandChartInstance.destroy();
-            }
             
-            demandChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: { labels: HORAS, datasets: datasets },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: t('demandInComensales'), color: 'var(--color-text-muted)' }, grid: { color: 'var(--color-border)' }, ticks: { color: 'var(--color-text-muted)' } },
-                        x: { title: { display: true, text: t('hourOfDay'), color: 'var(--color-text-muted)' }, grid: { color: 'transparent' }, ticks: { color: 'var(--color-text-muted)' } }
-                    },
-                    plugins: { legend: { position: 'top', labels: { color: 'var(--color-text)' } }, tooltip: { position: 'nearest' } }
+            document.querySelectorAll('#assignment-grid .assign-cell.is-assigned').forEach(cell => {
+                const { dia, hora } = cell.dataset;
+                if (!state.schedule[restaurant][area][dia]) state.schedule[restaurant][area][dia] = {};
+                if (!state.schedule[restaurant][area][dia][hora]) state.schedule[restaurant][area][dia][hora] = [];
+                if (!state.schedule[restaurant][area][dia][hora].includes(employeeId)) {
+                    state.schedule[restaurant][area][dia][hora].push(employeeId);
                 }
             });
-        };
+            
+            closeModal('assignment-modal');
+            fullRender();
+        });
 
-        // --- LÓGICA EXPORTAR PDF --- //
-        const getEmployeeShifts = (employeeId) => {
+        // --- LÓGICA EXPORTAR PDF Y CÁLCULO DE TURNOS --- //
+        const getConsolidatedShifts = (employeeId) => {
             const restaurant = state.currentRestaurant;
             const allSlots = [];
 
             DIAS_KEYS.forEach(dia => {
+                if (isEmployeeAbsent(employeeId, dia)) return;
+
                 HORAS.forEach(hora => {
-                    if (isEmployeeAssigned(employeeId, restaurant, dia, hora) && !isEmployeeAbsent(employeeId, dia)) {
+                    if (isEmployeeAssigned(employeeId, restaurant, dia, hora)) {
                         allSlots.push({ dia, hora: parseInt(hora.split(':')[0], 10) });
                     }
                 });
@@ -2120,26 +1845,30 @@
                 const dailySlots = allSlots.filter(s => s.dia === dia).map(s => s.hora).sort((a, b) => a - b);
                 if (dailySlots.length === 0) return;
 
-                let currentShift = { dia, startTime: dailySlots[0], endTime: dailySlots[0] + 1 };
+                let currentShift = { dia, startTime: dailySlots[0], endTime: dailySlots[0] };
 
                 for (let i = 1; i < dailySlots.length; i++) {
-                    if (dailySlots[i] === currentShift.endTime) {
-                        currentShift.endTime = dailySlots[i] + 1;
+                    if (dailySlots[i] === currentShift.endTime + 1) {
+                        currentShift.endTime = dailySlots[i];
                     } else {
-                        consolidatedShifts.push(currentShift);
-                        currentShift = { dia, startTime: dailySlots[i], endTime: dailySlots[i] + 1 };
+                        consolidatedShifts.push({ ...currentShift, endTime: currentShift.endTime + 1 });
+                        currentShift = { dia, startTime: dailySlots[i], endTime: dailySlots[i] };
                     }
                 }
-                consolidatedShifts.push(currentShift);
+                consolidatedShifts.push({ ...currentShift, endTime: currentShift.endTime + 1 });
             });
             
             return consolidatedShifts.map(s => ({
                 ...s,
-                dia: t(s.dia),
                 startTime: `${s.startTime}:00`,
                 endTime: `${s.endTime}:00`,
                 duration: s.endTime - s.startTime
             }));
+        };
+        
+        const getEmployeeShifts = (employeeId) => {
+            const shifts = getConsolidatedShifts(employeeId);
+            return shifts.map(s => ({...s, dia: t(s.dia) }));
         };
         
         const exportEmployeeSchedulePDF = (employeeId) => {
@@ -2193,7 +1922,7 @@
             absenceReasonSelect.innerHTML = '';
             const reasons = ['sick', 'vacation', 'personalMatter', 'other'];
             reasons.forEach(reasonKey => {
-                absenceReasonSelect.add(new Option(t(reasonKey), t(reasonKey, {lang: 'es'}))); // Save reason in spanish always
+                absenceReasonSelect.add(new Option(t(reasonKey), reasonKey));
             });
         };
         
@@ -2225,7 +1954,7 @@
                 li.className = 'absence-list-item';
                 li.innerHTML = `
                     <div>
-                        <span><strong>${t(absence.dia)}:</strong> ${absence.motivo}</span>
+                        <span><strong>${t(absence.dia)}:</strong> ${t(absence.motivo)}</span>
                         ${absence.notas ? `<small>${absence.notas}</small>` : ''}
                     </div>
                     <button class="btn btn-danger btn-sm" data-action="delete-absence" data-day="${absence.dia}" title="Eliminar Ausencia">&times;</button>
@@ -2241,20 +1970,20 @@
             const dia = document.getElementById('absence-day').value;
             const motivo = document.getElementById('absence-reason').value;
             const notas = document.getElementById('absence-notes').value.trim();
-            
-            const action = () => {
-                const restaurant = state.currentRestaurant;
-                if (!state.absences[restaurant][employeeId]) state.absences[restaurant][employeeId] = [];
-                state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.dia !== dia);
-                state.absences[restaurant][employeeId].push({ dia, motivo, notas });
-                renderAbsenceList(employeeId);
-                fullRender();
-                absenceForm.reset();
-            };
 
             const details = { employeeId, employeeName: employee.nombre, day: dia, reason: motivo, notes: notas };
-            promptForJustification('absence_add', details, t('prompt_justify_absence', {employeeName: employee.nombre, day: t(dia)}), action);
+            logAction('absence_add', details, null);
+
+            const restaurant = state.currentRestaurant;
+            if (!state.absences[restaurant][employeeId]) state.absences[restaurant][employeeId] = [];
+            state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.dia !== dia);
+            state.absences[restaurant][employeeId].push({ dia, motivo, notas });
+            
+            renderAbsenceList(employeeId);
+            fullRender();
+            absenceForm.reset();
         });
+
 
         document.getElementById('absence-list').addEventListener('click', e => {
             const deleteButton = e.target.closest('button[data-action="delete-absence"]');
@@ -2266,7 +1995,7 @@
 
                 if (state.absences[restaurant][employeeId]) {
                     state.absences[restaurant][employeeId] = state.absences[restaurant][employeeId].filter(a => a.dia !== dayToDelete);
-                     logAction('absence_remove', { employeeId, employeeName: employee.nombre, day: dayToDelete }, "Ausencia eliminada desde el modal.");
+                     logAction('absence_remove', { employeeId, employeeName: employee.nombre, day: dayToDelete }, null);
                 }
                 
                 renderAbsenceList(employeeId);
@@ -2312,7 +2041,8 @@
                 shift: 'log_type_shift',
                 absence: 'log_type_absence',
                 staff: 'log_type_staff',
-                schedule: 'log_type_schedule'
+                schedule: 'log_type_schedule',
+                note: 'log_type_note'
             };
             Object.entries(logTypes).forEach(([key, langKey]) => {
                 typeFilter.add(new Option(t(langKey), key));
@@ -2354,11 +2084,12 @@
             filteredLogs.forEach(log => {
                 const li = document.createElement('li');
                 li.className = 'log-entry';
+                const justificationHtml = log.justification ? `<p class="log-justification">"${log.justification}"</p>` : '';
                 li.innerHTML = `
                     <div class="log-icon">${getLogIcon(log.type)}</div>
                     <div class="log-details">
                         <p class="log-description">${formatLogMessage(log)}</p>
-                        <p class="log-justification">"${log.justification}"</p>
+                        ${justificationHtml}
                         <p class="log-meta">${new Date(log.timestamp).toLocaleString(state.currentLanguage, {dateStyle:'short', timeStyle:'short'})} - ${log.restaurant}</p>
                     </div>
                 `;
@@ -2372,6 +2103,7 @@
             if (type.startsWith('staff')) return '👥';
             if (type.startsWith('schedule_clear')) return '🗑️';
             if (type.startsWith('schedule')) return '⚙️';
+            if (type.startsWith('note')) return '📝';
             return 'ℹ️';
         };
 
@@ -2386,14 +2118,14 @@
                 case 'shift_remove':
                     return t('log_shift_remove', { employeeName, area: t(details.sourceArea), day: t(details.sourceDay), hour: details.sourceHour });
                 case 'shift_move':
-                     if (!details.sourceDay) return t('log_shift_add', { employeeName, area: t(details.targetArea), day: t(details.targetDay), hour: details.targetHour }); // Drag from sidebar
+                     if (!details.sourceDay) return t('log_shift_add', { employeeName, area: t(details.targetArea), day: t(details.targetDay), hour: details.targetHour });
                     return t('log_shift_move', { employeeName, sourceArea: t(details.sourceArea), sourceDay: t(details.sourceDay), sourceHour: details.sourceHour, targetArea: t(details.targetArea), targetDay: t(details.targetDay), targetHour: details.targetHour });
                 case 'schedule_clear':
                     return t('log_schedule_clear', { restaurantName: details.restaurantName });
                 case 'schedule_preassign':
                     return t('log_schedule_preassign', { restaurantName: details.restaurantName });
                 case 'absence_add':
-                    return t('log_absence_add', { employeeName, day: t(details.day), reason: details.reason });
+                    return t('log_absence_add', { employeeName, day: t(details.day), reason: t(details.reason) });
                 case 'absence_remove':
                     return t('log_absence_remove', { employeeName, day: t(details.day) });
                 case 'staff_add':
@@ -2402,6 +2134,8 @@
                     return t('log_staff_edit', { employeeName });
                 case 'staff_remove':
                     return t('log_staff_remove', { employeeName });
+                case 'note_add':
+                    return t('log_note_add', { noteText: details.noteText });
                 default:
                     return `Acción desconocida: ${type}`;
             }
@@ -2416,6 +2150,24 @@
             renderLogbook();
         });
 
+        // --- NOTE MODAL LOGIC --- //
+        addNoteBtn.addEventListener('click', () => {
+            document.getElementById('note-form').reset();
+            openModal('note-modal');
+        });
+        
+        document.getElementById('note-save-btn').addEventListener('click', () => {
+            const noteTextarea = document.getElementById('note-textarea');
+            const noteText = noteTextarea.value.trim();
+
+            if (!noteText) {
+                alert(t('pleaseWriteANote'));
+                return;
+            }
+
+            logAction('note_add', { noteText }, null); // No justification needed for manual notes
+            closeModal('note-modal');
+        });
 
         // --- INICIALIZACIÓN --- //
         const init = () => {
