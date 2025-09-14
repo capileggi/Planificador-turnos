@@ -90,8 +90,24 @@
             margin-bottom: 0.5rem;
         }
         
-        h1 { font-size: 1.5rem; }
+        h1 { 
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
         h2 { font-size: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; }
+        
+        #admin-badge {
+            font-size: 0.7rem;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
 
         .tabs {
             display: flex;
@@ -181,17 +197,22 @@
             border-radius: 0.375rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, opacity 0.2s;
             margin-top: 0.5rem;
             text-align: center;
             font-size: 0.875rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .btn-primary {
             background-color: var(--color-primary);
             color: white;
         }
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background-color: var(--color-primary-light);
         }
 
@@ -200,7 +221,7 @@
             color: var(--color-text);
             border: 1px solid var(--color-border);
         }
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background-color: #3e444e;
         }
         
@@ -208,8 +229,13 @@
             background-color: var(--color-danger);
             color: white;
         }
-        .btn-danger:hover {
+        .btn-danger:hover:not(:disabled) {
             background-color: #f87171;
+        }
+
+        .btn-success {
+            background-color: var(--color-success);
+            color: white;
         }
         
         .btn-sm {
@@ -668,7 +694,10 @@
 <body>
     <header>
         <div class="header-left">
-            <h1 data-lang-key="appTitle">Planificador de Turnos</h1>
+            <h1>
+                <span data-lang-key="appTitle">Planificador de Turnos</span>
+                <span id="admin-badge" class="hidden">Admin</span>
+            </h1>
             <select id="language-selector">
                 <option value="es">Español</option>
                 <option value="pt">Português</option>
@@ -683,6 +712,7 @@
             </select>
         </div>
         <div class="header-right">
+             <button id="save-changes-btn" class="btn btn-primary hidden" style="width: auto;" data-lang-key="saveChanges">Guardar Cambios</button>
              <button id="logbook-btn" class="action-icon-btn" title="Bitácora de Cambios">&#128214;</button>
             <button id="manage-staff-btn" class="btn btn-secondary" style="width: auto;" data-lang-key="manageStaff">Gestionar Personal</button>
         </div>
@@ -713,8 +743,8 @@
 
             <div class="sidebar-section">
                 <h3 data-lang-key="actions">Acciones</h3>
-                <button id="auto-assign-btn" class="btn btn-primary" data-lang-key="preassignShifts">Preasignar Turnos</button>
-                <button id="clear-schedule-btn" class="btn btn-secondary" data-lang-key="clearSchedule">Limpiar Horario</button>
+                <button id="auto-assign-btn" class="btn btn-primary hidden" data-lang-key="preassignShiftsMonthly">Preasignar Turnos (Mes)</button>
+                <button id="clear-schedule-btn" class="btn btn-secondary hidden" data-lang-key="clearSchedule">Limpiar Horario</button>
                 <button id="add-note-btn" class="btn btn-secondary" data-lang-key="addNoteToLogbook">Añadir Nota a Bitácora</button>
             </div>
         </aside>
@@ -920,6 +950,7 @@
             rules: { es: 'Reglas', pt: 'Regras' },
             actions: { es: 'Acciones', pt: 'Ações' },
             preassignShifts: { es: 'Preasignar Turnos', pt: 'Pré-atribuir Turnos' },
+            preassignShiftsMonthly: { es: 'Preasignar Turnos (Mes)', pt: 'Pré-atribuir Turnos (Mês)' },
             clearSchedule: { es: 'Limpiar Horario', pt: 'Limpar Horário' },
             kitchen: { es: 'Cocina', pt: 'Cozinha' },
             diningRoom: { es: 'Salón', pt: 'Salão' },
@@ -934,6 +965,7 @@
             cancel: { es: 'Cancelar', pt: 'Cancelar' },
             save: { es: 'Guardar', pt: 'Salvar' },
             saveChanges: { es: 'Guardar Cambios', pt: 'Salvar Alterações' },
+            saved: { es: 'Guardado!', pt: 'Salvo!' },
             confirm: { es: 'Confirmar', pt: 'Confirmar' },
             confirmClearSchedule: { es: '¿Estás seguro de que quieres limpiar todo el horario para este local?', pt: 'Tem certeza de que deseja limpar todo o horário para este local?' },
             employee: { es: 'Empleado', pt: 'Funcionário' },
@@ -943,6 +975,8 @@
             pleaseWriteANote: { es: 'Por favor, escribe una nota.', pt: 'Por favor, escreva uma nota.' },
             confirmDeleteEmployee: { es: '¿Seguro que quieres eliminar a este empleado? Esta acción no se puede deshacer.', pt: 'Tem certeza de que deseja excluir este funcionário? Esta ação não pode ser desfeita.' },
             employeeCannotBeAssigned: { es: '{employeeName} ({employeeArea}) no puede ser asignado a {targetArea}.', pt: '{employeeName} ({employeeArea}) não pode ser atribuído a {targetArea}.' },
+            adminModeActivated: { es: 'Modo Administrador Activado', pt: 'Modo Administrador Ativado' },
+            adminModeDeactivated: { es: 'Modo Administrador Desactivado', pt: 'Modo Administrador Desativado' },
             // Días y Meses
             lunes: { es: 'Lunes', pt: 'Segunda' },
             martes: { es: 'Martes', pt: 'Terça' },
@@ -1110,7 +1144,9 @@
                 praia: {}
             },
             dotacion: JSON.parse(JSON.stringify(INITIAL_DOTACION)), // Deep copy
-            log: []
+            log: [],
+            isAdmin: false,
+            isDirty: false
         };
         
         const t = (key, replacements = {}) => {
@@ -1121,9 +1157,33 @@
             return text;
         };
 
+        const saveChangesBtn = document.getElementById('save-changes-btn');
+
+        const markDirty = () => {
+            if (!state.isDirty) {
+                state.isDirty = true;
+                saveChangesBtn.classList.remove('hidden');
+            }
+        };
+
         const saveState = () => {
             try {
-                localStorage.setItem('scheduleAppState', JSON.stringify(state));
+                const stateToSave = { ...state };
+                delete stateToSave.isAdmin; // El estado de admin se maneja por separado
+                localStorage.setItem('scheduleAppState', JSON.stringify(stateToSave));
+                state.isDirty = false;
+                
+                saveChangesBtn.textContent = t('saved');
+                saveChangesBtn.classList.remove('btn-primary');
+                saveChangesBtn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    saveChangesBtn.classList.add('hidden');
+                    saveChangesBtn.textContent = t('saveChanges');
+                    saveChangesBtn.classList.add('btn-primary');
+                    saveChangesBtn.classList.remove('btn-success');
+                }, 2000);
+
             } catch (e) { console.error("Error guardando el estado:", e); }
         };
         
@@ -1132,10 +1192,9 @@
                 const savedState = localStorage.getItem('scheduleAppState');
                 if (savedState) {
                     const parsedState = JSON.parse(savedState);
-                    state.currentRestaurant = parsedState.currentRestaurant || 'porto';
-                    state.currentLanguage = parsedState.currentLanguage || 'es';
-                    state.currentWeekStartDate = parsedState.currentWeekStartDate || null;
-                    state.params = parsedState.params || { ...PARAMS_DEFAULT };
+                    // Merge saved state into the default state structure
+                    Object.assign(state, parsedState);
+                    // Ensure nested objects exist
                     state.schedule = parsedState.schedule || { porto: { cocina: {}, salon: {} }, praia: { cocina: {}, salon: {} } };
                     state.absences = parsedState.absences || { porto: {}, praia: {} };
                     state.dotacion = parsedState.dotacion || JSON.parse(JSON.stringify(INITIAL_DOTACION));
@@ -1145,6 +1204,7 @@
         };
 
         // --- ELEMENTOS DEL DOM --- //
+        const titleH1 = document.querySelector('header h1');
         const languageSelector = document.getElementById('language-selector');
         const restaurantTabs = document.getElementById('restaurant-tabs');
         const restaurantSelectorMobile = document.getElementById('restaurant-selector-mobile');
@@ -1180,6 +1240,18 @@
             });
         };
         
+        const getDatesForMonth = (dateInMonth) => {
+            const year = dateInMonth.getFullYear();
+            const month = dateInMonth.getMonth();
+            const date = new Date(year, month, 1);
+            const dates = [];
+            while (date.getMonth() === month) {
+                dates.push(new Date(date));
+                date.setDate(date.getDate() + 1);
+            }
+            return dates;
+        };
+
         const isSameDate = (date1, date2) => {
             return date1.getFullYear() === date2.getFullYear() &&
                    date1.getMonth() === date2.getMonth() &&
@@ -1241,6 +1313,32 @@
         };
 
         // --- FUNCIONES AUXILIARES --- //
+        const showToast = (message) => {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            Object.assign(toast.style, {
+                position: 'fixed',
+                bottom: '20px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                padding: '10px 20px',
+                borderRadius: '5px',
+                zIndex: '2000',
+                opacity: '0',
+                transition: 'opacity 0.3s ease-out'
+            });
+            document.body.appendChild(toast);
+            
+            setTimeout(() => { toast.style.opacity = '1'; }, 10);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 3000);
+        };
+        
         const getEmployeeById = id => {
             for (const restaurant of Object.values(state.dotacion)) {
                 for (const area of Object.values(restaurant)) {
@@ -1251,9 +1349,10 @@
             return null;
         };
         const getEmployeeArea = (id) => {
-            const restaurant = state.currentRestaurant;
-            if (state.dotacion[restaurant].cocina.some(e => e.id === id)) return 'cocina';
-            if (state.dotacion[restaurant].salon.some(e => e.id === id)) return 'salon';
+            for (const restaurantName in state.dotacion) {
+                if (state.dotacion[restaurantName].cocina.some(e => e.id === id)) return 'cocina';
+                if (state.dotacion[restaurantName].salon.some(e => e.id === id)) return 'salon';
+            }
             return null;
         };
         
@@ -1278,85 +1377,101 @@
         
         // --- LÓGICA DE AUTO-ASIGNACIÓN --- //
         const autoAssign = () => {
+            // This now assigns for the whole month of the current week.
             state.schedule[state.currentRestaurant] = { cocina: {}, salon: {} };
             
-            assignAreaWithSplitShifts('cocina');
-            assignAreaWithSplitShifts('salon');
+            const monthDates = getDatesForMonth(new Date(state.currentWeekStartDate));
+
+            assignAreaWithSplitShifts('cocina', monthDates);
+            assignAreaWithSplitShifts('salon', monthDates);
             
             logAction('schedule_preassign', { restaurantName: state.currentRestaurant }, null);
+            markDirty();
             fullRender();
         };
 
-        const assignAreaWithSplitShifts = (area) => {
+        const assignAreaWithSplitShifts = (area, monthDates) => {
             const restaurant = state.currentRestaurant;
             const dotacion = state.dotacion[restaurant][area].filter(e => e.contratoSem === 40);
             if (dotacion.length === 0) return;
-            const weekDates = getCurrentWeekDates();
 
-            // 1. Determinar necesidades de cobertura semanales
-            const weeklyNeeds = {};
-            weekDates.forEach(date => {
-                const dateString = dateToISOString(date);
-                weeklyNeeds[dateString] = {};
-                HORAS.forEach(hora => {
-                    const reqs = calculateRequirements(restaurant, date, hora);
-                    weeklyNeeds[dateString][hora] = area === 'cocina' ? reqs.reqCocina : reqs.reqSalon;
+            // Group dates by week
+            const weeks = [];
+            let currentWeek = [];
+            monthDates.forEach(date => {
+                currentWeek.push(date);
+                if (date.getDay() === 0 || date.getDate() === monthDates[monthDates.length-1].getDate()) {
+                    weeks.push(currentWeek);
+                    currentWeek = [];
+                }
+            });
+
+            weeks.forEach(weekDates => {
+                 // 1. Determinar necesidades de cobertura semanales
+                const weeklyNeeds = {};
+                weekDates.forEach(date => {
+                    const dateString = dateToISOString(date);
+                    weeklyNeeds[dateString] = {};
+                    HORAS.forEach(hora => {
+                        const reqs = calculateRequirements(restaurant, date, hora);
+                        weeklyNeeds[dateString][hora] = area === 'cocina' ? reqs.reqCocina : reqs.reqSalon;
+                    });
                 });
-            });
 
-            // 2. Asignar días libres rotativos y consecutivos
-            const daysOffPatterns = [[5, 6], [6, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]; // Sáb/Dom, Dom/Lun, etc.
-            const employeeWorkDates = {};
-            dotacion.forEach((employee, index) => {
-                const offIndices = daysOffPatterns[index % daysOffPatterns.length];
-                employeeWorkDates[employee.id] = weekDates
-                    .filter((_, dayIndex) => !offIndices.includes(dayIndex))
-                    .map(date => dateToISOString(date));
-            });
-            
-            // 3. Asignar turnos día por día
-            weekDates.forEach(date => {
-                const dateString = dateToISOString(date);
-                const employeesWorkingToday = dotacion.filter(e => 
-                    employeeWorkDates[e.id].includes(dateString) && !isEmployeeAbsent(e.id, dateString)
-                );
-                shuffleArray(employeesWorkingToday);
+                // 2. Asignar días libres rotativos y consecutivos
+                const daysOffPatterns = [[5, 6], [6, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]; // Sáb/Dom, Dom/Lun, etc.
+                const employeeWorkDates = {};
+                dotacion.forEach((employee, index) => {
+                    const offIndices = daysOffPatterns[index % daysOffPatterns.length];
+                    employeeWorkDates[employee.id] = weekDates
+                        .filter((date) => !offIndices.includes((date.getDay() + 6) % 7))
+                        .map(date => dateToISOString(date));
+                });
+                
+                // 3. Asignar turnos día por día para la semana actual
+                weekDates.forEach(date => {
+                    const dateString = dateToISOString(date);
+                    const employeesWorkingToday = dotacion.filter(e => 
+                        employeeWorkDates[e.id].includes(dateString) && !isEmployeeAbsent(e.id, dateString)
+                    );
+                    shuffleArray(employeesWorkingToday);
 
-                employeesWorkingToday.forEach(employee => {
-                    let bestShift = { startIndex: -1, score: -Infinity };
+                    employeesWorkingToday.forEach(employee => {
+                        let bestShift = { startIndex: -1, score: -Infinity };
 
-                    const possibleStartIndices = Array.from({ length: HORAS.length - 9 + 1 }, (_, i) => i);
-                    
-                    possibleStartIndices.forEach(startIndex => {
-                        let currentScore = 0;
-                        for (let i = 0; i < 4; i++) {
-                            const hora = HORAS[startIndex + i];
-                            currentScore += weeklyNeeds[dateString][hora];
-                        }
-                        for (let i = 5; i < 9; i++) {
-                            const hora = HORAS[startIndex + i];
-                            currentScore += weeklyNeeds[dateString][hora];
-                        }
+                        const possibleStartIndices = Array.from({ length: HORAS.length - 9 + 1 }, (_, i) => i);
                         
-                        if (currentScore > bestShift.score) {
-                            bestShift = { startIndex, score: currentScore };
+                        possibleStartIndices.forEach(startIndex => {
+                            let currentScore = 0;
+                            for (let i = 0; i < 4; i++) { // First part of split shift
+                                const hora = HORAS[startIndex + i];
+                                currentScore += weeklyNeeds[dateString][hora] || 0;
+                            }
+                            for (let i = 5; i < 9; i++) { // Second part of split shift
+                                const hora = HORAS[startIndex + i];
+                                currentScore += weeklyNeeds[dateString][hora] || 0;
+                            }
+                            
+                            if (currentScore > bestShift.score) {
+                                bestShift = { startIndex, score: currentScore };
+                            }
+                        });
+
+                        if (bestShift.startIndex !== -1) {
+                            const assignHour = (hora) => {
+                                if (!state.schedule[restaurant][area][dateString]) state.schedule[restaurant][area][dateString] = {};
+                                if (!state.schedule[restaurant][area][dateString][hora]) state.schedule[restaurant][area][dateString][hora] = [];
+                                state.schedule[restaurant][area][dateString][hora].push(employee.id);
+
+                                if (weeklyNeeds[dateString][hora] > 0) {
+                                    weeklyNeeds[dateString][hora]--;
+                                }
+                            };
+                            
+                            for (let i = 0; i < 4; i++) assignHour(HORAS[bestShift.startIndex + i]);
+                            for (let i = 5; i < 9; i++) assignHour(HORAS[bestShift.startIndex + i]);
                         }
                     });
-
-                    if (bestShift.startIndex !== -1) {
-                         const assignHour = (hora) => {
-                            if (!state.schedule[restaurant][area][dateString]) state.schedule[restaurant][area][dateString] = {};
-                            if (!state.schedule[restaurant][area][dateString][hora]) state.schedule[restaurant][area][dateString][hora] = [];
-                            state.schedule[restaurant][area][dateString][hora].push(employee.id);
-
-                            if (weeklyNeeds[dateString][hora] > 0) {
-                                weeklyNeeds[dateString][hora]--;
-                            }
-                        };
-                        
-                        for (let i = 0; i < 4; i++) assignHour(HORAS[bestShift.startIndex + i]);
-                        for (let i = 5; i < 9; i++) assignHour(HORAS[bestShift.startIndex + i]);
-                    }
                 });
             });
         };
@@ -1372,7 +1487,7 @@
                 justification
             };
             state.log.unshift(logEntry);
-            saveState();
+            markDirty();
         };
 
         // --- LÓGICA DE RENDERIZADO --- //
@@ -1583,11 +1698,8 @@
             document.documentElement.lang = state.currentLanguage;
             document.querySelectorAll('[data-lang-key]').forEach(el => {
                 const key = el.dataset.langKey;
-                if (el.querySelector('span[data-lang-key]')) {
-                     el.querySelector('span[data-lang-key]').textContent = t(key);
-                } else {
-                     el.textContent = t(key);
-                }
+                const targetEl = el.querySelector('span[data-lang-key]') || el;
+                targetEl.textContent = t(key);
             });
              document.querySelectorAll('[data-lang-key-placeholder]').forEach(el => {
                 const key = el.dataset.langKeyPlaceholder;
@@ -1597,17 +1709,25 @@
             document.getElementById('logbook-btn').title = t('changeLogbook');
             fullRender();
         };
+        
+        const updateAdminControls = () => {
+            const adminButtons = [autoAssignBtn, clearScheduleBtn];
+            adminButtons.forEach(btn => {
+                btn.classList.toggle('hidden', !state.isAdmin);
+            });
+            document.getElementById('admin-badge').classList.toggle('hidden', !state.isAdmin);
+        };
 
         const fullRender = () => {
             renderWeekSelector();
             renderUnifiedSchedule();
             renderKPIs();
             renderEmployeeLoad();
-            saveState();
         };
 
         // --- MANEJADORES DE EVENTOS --- //
-        
+        saveChangesBtn.addEventListener('click', saveState);
+
         languageSelector.addEventListener('change', (e) => {
             state.currentLanguage = e.target.value;
             updateUIText();
@@ -1660,6 +1780,7 @@
             logAction('schedule_clear', details, null);
             
             state.schedule[state.currentRestaurant] = { cocina: {}, salon: {} };
+            markDirty();
             fullRender();
         });
 
@@ -1719,7 +1840,8 @@
             if (button.id === 'add-staff-salon-btn') openStaffEditModal('salon');
             
             const { action, id } = button.dataset;
-            if (action === 'edit') openStaffEditModal(getEmployeeArea(id), id);
+            const area = getEmployeeArea(id);
+            if (action === 'edit' && area) openStaffEditModal(area, id);
             if (action === 'delete') deleteEmployee(id);
         });
 
@@ -1767,6 +1889,7 @@
                 logAction('staff_add', { employeeId: employeeData.id, employeeName: employeeData.nombre, area }, null);
             }
             renderStaffModal();
+            markDirty();
             closeModal('staff-edit-modal');
             fullRender();
         });
@@ -1798,6 +1921,7 @@
             }
             
             renderStaffModal();
+            markDirty();
             fullRender();
         };
 
@@ -1807,7 +1931,7 @@
         const openAssignmentModal = (employeeId) => {
             const employee = getEmployeeById(employeeId);
             const area = getEmployeeArea(employeeId);
-            if (!employee) return;
+            if (!employee || !area) return;
             
             currentAssignmentState.employeeId = employeeId;
             currentAssignmentState.tempSchedule = {};
@@ -1884,6 +2008,7 @@
                 }
             });
             
+            markDirty();
             closeModal('assignment-modal');
             fullRender();
         });
@@ -2065,6 +2190,7 @@
             state.absences[restaurant][employeeId].push({ date, motivo, notas });
             
             renderAbsenceList(employeeId);
+            markDirty();
             fullRender();
             absenceForm.reset();
         });
@@ -2087,6 +2213,7 @@
                 }
                 
                 renderAbsenceList(employeeId);
+                markDirty();
                 fullRender();
             }
         });
@@ -2256,17 +2383,58 @@
             }
 
             logAction('note_add', { noteText }, null);
+            markDirty();
             closeModal('note-modal');
         });
 
+        // --- ADMIN MODE LOGIC --- //
+        const toggleAdminMode = () => {
+            state.isAdmin = !state.isAdmin;
+            localStorage.setItem('scheduleAppAdmin', state.isAdmin);
+            updateAdminControls();
+            const langKey = state.isAdmin ? 'adminModeActivated' : 'adminModeDeactivated';
+            showToast(t(langKey));
+        };
+        
+        let adminClickCount = 0;
+        let adminClickTimer = null;
+        titleH1.addEventListener('click', () => {
+            adminClickCount++;
+            clearTimeout(adminClickTimer);
+            adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 1500);
+
+            if (adminClickCount >= 5) {
+                toggleAdminMode();
+                adminClickCount = 0;
+                clearTimeout(adminClickTimer);
+            }
+        });
+
+
         // --- INICIALIZACIÓN --- //
         const init = () => {
-            loadState();
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            loadState(); // Carga datos de horarios, personal, etc.
+
+            // Carga el estado de administrador por separado
+            const savedAdminState = localStorage.getItem('scheduleAppAdmin');
+            if (savedAdminState !== null) {
+                state.isAdmin = savedAdminState === 'true';
+            }
+
+            // El parámetro URL puede anular el estado guardado y persistirlo
+            if (urlParams.get('role') === 'admin') {
+                state.isAdmin = true;
+                localStorage.setItem('scheduleAppAdmin', 'true');
+            }
+
             if (!state.currentWeekStartDate) {
                 state.currentWeekStartDate = dateToISOString(getMonday(new Date()));
             }
             languageSelector.value = state.currentLanguage;
             updateRestaurantControls(state.currentRestaurant);
+            updateAdminControls();
             updateUIText();
         };
 
