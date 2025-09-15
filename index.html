@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-lang-key="appTitle">Planificador de Turnos Semanal</title>
+    
+    <!-- Meta tags to aggressively prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -935,6 +941,10 @@
         </div>
     </div>
 
-    <script type="module" src="./index.tsx"></script>
+    <script type="module">
+        // Dynamically import the main script with a cache-busting timestamp
+        // to ensure the latest version is always loaded, especially on mobile.
+        import(`./index.tsx?v=${Date.now()}`);
+    </script>
 </body>
 </html>

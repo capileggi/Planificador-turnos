@@ -370,7 +370,8 @@ const calculateHourlyDemand = (restaurant, date, hora) => {
 
     if (sum_F_hora === 0 || F_dia === 0) return 0;
 
-    const w_h = F_hora / sum_F_hora;
+    // FIX: Cast operands to number to resolve an arithmetic operation error, consistent with other explicit casts in the file.
+    const w_h = (F_hora as number) / (sum_F_hora as number);
     
     // FIX: Cast variables to number to ensure arithmetic operation is valid for the TypeScript compiler.
     const demandaDiariaAjustada = (params.demandaDiaria as number) * (F_mes as number) * (F_dia as number);
