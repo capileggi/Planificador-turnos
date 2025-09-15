@@ -1148,6 +1148,7 @@
             isAdmin: false,
             isDirty: false
         };
+        let autoSaveTimeout = null;
         
         const t = (key, replacements = {}) => {
             let text = translations[key]?.[state.currentLanguage] || key;
@@ -1157,13 +1158,28 @@
             return text;
         };
 
+        const debouncedSaveState = () => {
+            clearTimeout(autoSaveTimeout);
+            // Auto-save 1.5 seconds after the last change
+            autoSaveTimeout = setTimeout(() => {
+                if (state.isDirty) {
+                    saveState();
+                }
+            }, 1500);
+        };
+
         const saveChangesBtn = document.getElementById('save-changes-btn');
 
         const markDirty = () => {
             if (!state.isDirty) {
                 state.isDirty = true;
                 saveChangesBtn.classList.remove('hidden');
+                // Reset button appearance in case it was just saved
+                saveChangesBtn.textContent = t('saveChanges');
+                saveChangesBtn.classList.remove('btn-success');
+                saveChangesBtn.classList.add('btn-primary');
             }
+            debouncedSaveState();
         };
 
         const saveState = () => {
@@ -1727,6 +1743,13 @@
 
         // --- MANEJADORES DE EVENTOS --- //
         saveChangesBtn.addEventListener('click', saveState);
+
+        window.addEventListener('beforeunload', () => {
+            if (state.isDirty) {
+                clearTimeout(autoSaveTimeout); // Cancel any pending auto-save
+                saveState(); // Save immediately
+            }
+        });
 
         languageSelector.addEventListener('change', (e) => {
             state.currentLanguage = e.target.value;
