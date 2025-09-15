@@ -941,10 +941,14 @@
         </div>
     </div>
 
-    <script type="module">
-        // Dynamically import the main script with a cache-busting timestamp
-        // to ensure the latest version is always loaded, especially on mobile.
-        import(`./index.tsx?v=${Date.now()}`);
+    <script>
+        // Dynamically create a script tag with a cache-busting timestamp.
+        // This is a more robust way to ensure the latest version is loaded,
+        // especially on mobile, and avoids potential issues with dynamic import syntax.
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = `./index.js?v=${Date.now()}`;
+        document.body.appendChild(script);
     </script>
 </body>
 </html>
