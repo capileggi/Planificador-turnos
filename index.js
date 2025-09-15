@@ -1492,6 +1492,21 @@ titleH1.addEventListener('click', () => {
     }
 });
 
+// --- SERVICE WORKER REGISTRATION --- //
+const registerServiceWorker = () => {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+        });
+    }
+};
+
 
 // --- INICIALIZACIÓN --- //
 const init = () => {
@@ -1518,6 +1533,7 @@ const init = () => {
     updateRestaurantControls(state.currentRestaurant);
     updateAdminControls();
     updateUIText();
+    registerServiceWorker(); // Register the service worker
 };
 
 init();
